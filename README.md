@@ -31,3 +31,29 @@ A customer has installed radio-controlled equipment with HTTP-compatible interfa
 - **Dynamic Physics:** Animations adapt to the screen width (responsive down to 500px).
 - **Winner Declaration:** Once a car finishes, the winner's name is displayed.
 - **Reset:** Return all cars to the starting line with one click.
+
+###  Winners View
+- **Statistics Table:** Displays car image, name, total wins, and the best time (seconds).
+- **Sorting:** Sort data by the number of wins or the best time in ascending/descending order.
+- **Pagination:** Manage large lists of winners efficiently.
+
+##  Technical Stack & Requirements
+
+- **Language:** TypeScript (Strict mode: no `any`, no type assertions `as`, no non-null assertions `!`).
+- **Frameworks:** **None.** (Pure TypeScript/JavaScript only).
+- **Styling:** CSS / SASS Modules / Bootstrap (CSS only).
+- **Bundler:** Vite / Webpack.
+- **Code Quality:** 
+  - Follows **Airbnb JavaScript Style Guide**.
+  - **ESLint** with Unicorn configuration.
+  - Max function length: 40 lines.
+  - No "magic numbers" or "magic strings".
+
+##  How to Run
+
+1. **Clone the Server Mock:**
+   ```bash
+   git clone [link-to-server-repo]
+   cd server-repo
+   npm install
+   npm start
