@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+
+# TypeScript build artifacts
+*.tsbuildinfo
+
+# Test coverage reports
+coverage/
+
+# System files (Windows/macOS)
+.DS_Store
+Thumbs.db
+
+# Tool caches
+.vite/
+.cache/
+.eslintcache
+.prettiercache
+
+# IDE settings
+.vscode/
