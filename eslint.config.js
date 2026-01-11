@@ -1,46 +1,50 @@
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsparser from '@typescript-eslint/parser';
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 import unicorn from 'eslint-plugin-unicorn';
-import prettier from 'eslint-plugin-prettier';
+import prettier from 'eslint-plugin-prettier/recommended';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
-export default [
+export default defineConfig(
+  globalIgnores([
+    'node_modules/**',
+    'dist/**',
+    'eslint.config.js',
+    'prettier.config.js',
+    'vite.config.js',
+  ]),
   {
+    name: 'viteConfig',
     files: ['**/*.ts'],
-    ignores: [
-      'node_modules',
-      'dist',
-      'build',
-      'coverage',
-      '*.min.js',
-      'package-lock.json',
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      unicorn.configs.recommended,
+      prettier,
     ],
     languageOptions: {
-      parser: tsparser,
       ecmaVersion: 'latest',
-      sourceType: 'module',
-    },
-    plugins: {
-      '@typescript-eslint': tseslint,
-      unicorn,
-      prettier,
+      globals: { ...globals.browser },
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     rules: {
+      'no-console': 'warn',
+      'no-warning-comments': 'warn',
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-
-      'unicorn/no-array-callback-reference': 'error',
-      'unicorn/no-null': 'error',
-      'unicorn/number-literal-case': 'error',
-      'unicorn/numeric-separators-style': 'error',
-      'unicorn/filename-case': ['error', { case: 'kebabCase' }],
-      'unicorn/prefer-query-selector': 'error',
-      'unicorn/prefer-string-slice': 'error',
-      'unicorn/prefer-type-error': 'error',
-      'unicorn/no-useless-undefined': 'error',
-      'unicorn/explicit-length-check': 'error',
+      'unicorn/no-array-callback-reference': 'off',
+      'unicorn/no-array-for-each': 'off',
+      'unicorn/no-array-reduce': 'off',
+      'unicorn/no-null': 'off',
+      'unicorn/number-literal-case': 'off',
+      'unicorn/numeric-separators-style': 'off',
       'unicorn/prevent-abbreviations': [
         'error',
         {
           allowList: {
+            acc: true,
             env: true,
             i: true,
             j: true,
@@ -49,7 +53,6 @@ export default [
           },
         },
       ],
-      'prettier/prettier': 'error',
     },
   },
-];
+);
