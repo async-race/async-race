@@ -1,9 +1,14 @@
-export function Button(
-  textContent: string,
-  disabled: boolean,
-  onClick: (event: MouseEvent | KeyboardEvent) => void,
-  extraClasses?: string,
-): HTMLButtonElement {
+export function Button({
+  textContent,
+  disabled = false,
+  onClick,
+  extraClasses = '',
+}: {
+  textContent: string;
+  disabled?: boolean;
+  onClick?: (event: MouseEvent | KeyboardEvent) => void;
+  extraClasses?: string;
+}): HTMLButtonElement {
   const baseClasses = `
     bg-sky-400 hover:bg-sky-700 
     p-2 
@@ -18,7 +23,9 @@ export function Button(
   button.className = `${baseClasses} ${extraClasses}`.trim();
   button.textContent = textContent;
   button.disabled = disabled;
-  button.addEventListener('click', onClick);
+  if (onClick) {
+    button.addEventListener('click', onClick);
+  }
 
   return button;
 }
