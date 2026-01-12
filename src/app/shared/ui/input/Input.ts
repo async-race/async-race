@@ -1,5 +1,3 @@
-import '../../../styles/component.css';
-
 export function Input({
   type = 'text',
   id,
