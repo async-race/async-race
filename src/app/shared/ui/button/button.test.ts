@@ -12,7 +12,7 @@ describe('Button component', () => {
   it('adds base Classes', () => {
     const btn = Button({ textContent: 'Press me' });
 
-    expect(btn.className).toContain('button-base');
+    expect(btn.className).toContain('hover:bg-sky-700');
   });
 
   it('adds extra Classes', () => {

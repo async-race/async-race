@@ -1,3 +1,5 @@
+import { baseClasses } from '../baseClasses';
+
 export function Input({
   type = 'text',
   id,
@@ -11,9 +13,9 @@ export function Input({
   placeholder?: string;
   extraClasses?: string;
 }): HTMLInputElement {
-  const baseClasses = 'input-base';
+  const base = baseClasses['input'];
   const input = document.createElement('input');
-  input.className = `${baseClasses} ${extraClasses}`.trim();
+  input.className = `${base} ${extraClasses}`.trim();
   input.id = id;
   if (name) input.name = name;
   if (placeholder) input.placeholder = placeholder;

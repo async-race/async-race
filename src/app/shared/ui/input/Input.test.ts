@@ -11,7 +11,7 @@ describe('Input component', () => {
   it('adds baseClasses', () => {
     const input = Input({ id: 'round' });
 
-    expect(input.className).toContain('input-base');
+    expect(input.className).toContain('focus:outline-none');
   });
 
   it('adds extraClasses', () => {

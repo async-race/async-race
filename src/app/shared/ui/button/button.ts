@@ -1,3 +1,5 @@
+import { baseClasses } from '../baseClasses';
+
 export function Button({
   textContent,
   disabled = false,
@@ -9,10 +11,9 @@ export function Button({
   onClick?: (event: MouseEvent | KeyboardEvent) => void;
   extraClasses?: string;
 }): HTMLButtonElement {
-  const baseClasses = 'button-base';
-
+  const base = baseClasses['button'];
   const button = document.createElement('button');
-  button.className = `${baseClasses} ${extraClasses}`.trim();
+  button.className = `${base} ${extraClasses}`.trim();
   button.textContent = textContent;
   button.disabled = disabled;
   if (onClick) {

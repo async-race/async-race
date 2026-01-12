@@ -8,10 +8,10 @@ describe('BlockComponent', () => {
     expect(element.tagName.toLowerCase()).toBe('div');
   });
 
-  it('adds className that includes the tagName-base form ', () => {
+  it('adds base style', () => {
     const element = BlockComponent({ tagName: 'h1' });
 
-    expect(element.className).toContain('h1-base');
+    expect(element.className).toContain('md:text-4xl');
   });
 
   it('adds extraClasses', () => {

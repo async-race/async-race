@@ -1,3 +1,5 @@
+import { baseClasses } from '../baseClasses';
+
 export function BlockComponent({
   tagName = 'div',
   extraClasses = '',
@@ -7,9 +9,9 @@ export function BlockComponent({
   extraClasses?: string;
   textContent?: string;
 }): HTMLElement {
-  const baseClasses = `${tagName}-base`;
+  const base = baseClasses[tagName];
   const blockComponent = document.createElement(tagName);
-  blockComponent.className = `${baseClasses} ${extraClasses}`.trim();
+  blockComponent.className = `${base} ${extraClasses}`.trim();
   blockComponent.textContent = textContent;
 
   return blockComponent;
