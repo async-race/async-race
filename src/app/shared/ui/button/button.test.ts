@@ -1,4 +1,4 @@
-import { Button } from './button';
+import { Button } from './Button';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('Button component', () => {
