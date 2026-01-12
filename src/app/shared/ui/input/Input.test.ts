@@ -11,8 +11,7 @@ describe('Input component', () => {
   it('adds baseClasses', () => {
     const input = Input({ id: 'round' });
 
-    expect(input.className).toContain('bg-gray-50');
-    expect(input.className).toContain('md:text-lg');
+    expect(input.className).toContain('input-base');
   });
 
   it('adds extraClasses', () => {

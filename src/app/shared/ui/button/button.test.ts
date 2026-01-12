@@ -12,8 +12,7 @@ describe('Button component', () => {
   it('adds base Classes', () => {
     const btn = Button({ textContent: 'Press me' });
 
-    expect(btn.className).toContain('bg-sky-400');
-    expect(btn.className).toContain('rounded-2xl');
+    expect(btn.className).toContain('button-base');
   });
 
   it('adds extra Classes', () => {
