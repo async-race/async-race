@@ -128,15 +128,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
-          # cache: 'npm'
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Build project
+        run: npm run build
+
       - name: Install Netlify CLI
-        run: npm install -g netlify-cli@latest
-      
+        run: npm install -g netlify-cli@17
+
       - name: Publish
         id: netlify
         run: |
@@ -146,7 +149,7 @@ jobs:
             --site $NETLIFY_SITE_ID \
             --json > netlify.json
 
-          PREVIEW_URL=$(jq -r '.deploy.deploy_url' netlify.json)
+          PREVIEW_URL=$(jq -r '.deploy_url' netlify.json)
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
