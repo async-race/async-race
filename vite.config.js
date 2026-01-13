@@ -16,6 +16,7 @@ export default defineConfig({
       exclude: [
         'src/**/*.test.{js,ts}',
         'src/**/*.d.ts',
+        'src/**/*types.ts',
       ],
       thresholds: {
         global: {
