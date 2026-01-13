@@ -2,6 +2,9 @@ name: Branch Name Validation
 
 on:
   push:
+    branches-ignore:
+      - 'main'
+      - 'develop'
 
 jobs:
   validate-branch-naming:
