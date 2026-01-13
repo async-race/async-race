@@ -6,6 +6,7 @@ describe('Input component', () => {
     const input = Input({ id: 'round' });
 
     expect(input.type).toBe('text');
+    expect(input.tagName.toLowerCase()).toBe('input');
   });
 
   it('adds baseClasses', () => {

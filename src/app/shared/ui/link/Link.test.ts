@@ -6,6 +6,7 @@ describe('Link component', () => {
     const link = Link({ href: '/home' });
 
     expect(link.href).toContain('/home');
+    expect(link.tagName.toLowerCase()).toBe('a');
   });
 
   it('adds target attribute', () => {
