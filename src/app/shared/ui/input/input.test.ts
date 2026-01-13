@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Input } from './Input';
+import { Input } from './input';
 
 describe('Input component', () => {
   it('creates an instance of input with default type', () => {

@@ -1,4 +1,5 @@
-import { Image } from './Image';
+import { Image } from './image';
+
 import { describe, expect, it } from 'vitest';
 
 describe('Image Component', () => {

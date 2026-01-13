@@ -1,4 +1,4 @@
-import { Link } from './Link';
+import { Link } from './link';
 import { describe, expect, it } from 'vitest';
 
 describe('Link component', () => {
