@@ -1,0 +1,167 @@
+name: Feature Validation
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+
+  pull_request:
+    branches:
+      - main
+      - develop
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  lint:
+    name: 'ESLint Validation'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        id: lint-step
+        run: |
+          echo "Running lint checks..."
+          npm run lint || {
+            echo "::error::Linting failed"
+            echo "## ESLint Errors Detected" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
+          echo "Linting passed"
+
+  test:
+    name: 'Unit Tests'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        id: test-step
+        run: |
+          echo "Running unit tests..."
+          npm run test || {
+            echo "::error::Tests failed"
+            echo "## Unit Tests Failed" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
+          echo "All tests passed"
+
+  build:
+    name: 'Build Verification'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        id: build-step
+        run: |
+          echo "Building application..."
+          npm run build || {
+            echo "::error::Build failed"
+            echo "## Build Failed" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
+          echo "Build successful"
+
+      - name: Verify build output
+        run: |
+          if [ -d "dist" ]; then
+            echo "Build output exists"
+            echo "Directory structure:"
+            find . -maxdepth 2 -type d -name "dist" -o -name "build" -o -name "out" | head -5
+          else
+            echo "::warning::No build directories found"
+          fi
+
+  deploy-preview:
+    name: 'Publish on Netlify'
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          # cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli@latest
+      
+      - name: Publish
+        id: netlify
+        run: |
+          npx netlify deploy \
+            --dir=dist \
+            --auth $NETLIFY_AUTH_TOKEN \
+            --site $NETLIFY_SITE_ID \
+            --json > netlify.json
+
+          PREVIEW_URL=$(jq -r '.deploy.deploy_url' netlify.json)
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Comment preview URL on PR
+        if: steps.netlify.outputs.preview_url != ''
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const url = '${{ steps.netlify.outputs.preview_url }}';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `**Preview deployed**\n ${url}`
+            });

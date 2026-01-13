@@ -13,10 +13,7 @@ export default defineConfig({
       enabled: false,
       reporter: ['text'],
       include: ['src/**/*.{js,ts}'],
-      exclude: [
-        'src/**/*.test.{js,ts}',
-        'src/**/*.d.ts',
-      ],
+      exclude: ['src/**/*.test.{js,ts}', 'src/**/*.d.ts'],
       thresholds: {
         global: {
           statements: 70,
