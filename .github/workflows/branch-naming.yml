@@ -1,0 +1,20 @@
+name: Branch Name Validation
+
+on:
+  push:
+
+jobs:
+  validate-branch-naming:
+    name: "Branch Name Validation"
+    if: github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name pattern
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+
+          if [[ ! "$BRANCH_NAME" =~ ^(feature|fix|chore|refactor)/ ]]; then
+            echo "::error::Branch '$BRANCH_NAME' must start with 'feature/' 'fix/' 'chore/' or 'refactor/'"
+            exit 1
+          fi
+          echo "Branch naming OK"
