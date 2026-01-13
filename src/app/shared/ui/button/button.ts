@@ -1,4 +1,4 @@
-import { baseClasses } from '../baseClasses';
+import { baseClasses } from '../base-classes';
 
 export function Button({
   textContent,

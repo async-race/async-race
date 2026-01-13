@@ -1,37 +1,40 @@
-import { Button } from './Button';
+import { Button } from './button';
 import { describe, expect, it, vi } from 'vitest';
 
 describe('Button component', () => {
   it('creates an instance of button with given text', () => {
-    const btn = Button({ textContent: 'Press me' });
+    const button = Button({ textContent: 'Press me' });
 
-    expect(btn.tagName).toBe('BUTTON');
-    expect(btn.textContent).toBe('Press me');
+    expect(button.tagName).toBe('BUTTON');
+    expect(button.textContent).toBe('Press me');
   });
 
   it('adds base Classes', () => {
-    const btn = Button({ textContent: 'Press me' });
+    const button = Button({ textContent: 'Press me' });
 
-    expect(btn.className).toContain('hover:bg-sky-700');
+    expect(button.className).toContain('hover:bg-sky-700');
   });
 
   it('adds extra Classes', () => {
-    const btn = Button({ textContent: 'Press me', extraClasses: 'shadow-lg' });
+    const button = Button({
+      textContent: 'Press me',
+      extraClasses: 'shadow-lg',
+    });
 
-    expect(btn.className).toContain('shadow-lg');
+    expect(button.className).toContain('shadow-lg');
   });
 
   it('adds disabled', () => {
-    const btn = Button({ textContent: 'Press me', disabled: true });
+    const button = Button({ textContent: 'Press me', disabled: true });
 
-    expect(btn.disabled).toBe(true);
+    expect(button.disabled).toBe(true);
   });
 
   it('calls onClick callback function', () => {
     const onClick = vi.fn();
-    const btn = Button({ textContent: 'Press me', onClick: onClick });
+    const button = Button({ textContent: 'Press me', onClick: onClick });
 
-    btn.click();
+    button.click();
 
     expect(onClick).toHaveBeenCalledTimes(1);
   });

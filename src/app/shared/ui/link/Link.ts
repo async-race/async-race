@@ -1,7 +1,7 @@
-import { baseClasses } from '../baseClasses';
+import { baseClasses } from '../base-classes';
 
 export function Link({
-  href = '',
+  href,
   target = '',
   title = '',
   extraClasses = '',
