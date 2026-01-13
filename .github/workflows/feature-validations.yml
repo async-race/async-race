@@ -134,17 +134,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli@latest
+      
       - name: Publish
         id: netlify
         run: |
-          OUTPUT=$(npx netlify-cli@latest deploy \
+          npx netlify deploy \
             --dir=dist \
             --auth $NETLIFY_AUTH_TOKEN \
-            --site $NETLIFY_SITE_ID)
+            --site $NETLIFY_SITE_ID \
+            --json > netlify.json
 
-          echo "$OUTPUT"
-
-          PREVIEW_URL=$(echo "$OUTPUT" | grep -Eo 'https://[^ ]+netlify\.app' | head -1)
+          PREVIEW_URL=$(jq -r '.deploy.deploy_url' netlify.json)
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
