@@ -1,6 +1,6 @@
 import { baseClasses } from '../base-classes';
 
-export function Button({
+export function Button<T>({
   textContent,
   disabled = false,
   onClick,
@@ -8,7 +8,7 @@ export function Button({
 }: {
   textContent: string;
   disabled?: boolean;
-  onClick?: (event: MouseEvent | KeyboardEvent) => void;
+  onClick?: (event: MouseEvent | KeyboardEvent) => Promise<T>;
   extraClasses?: string;
 }): HTMLButtonElement {
   const base = baseClasses['button'];
@@ -17,7 +17,9 @@ export function Button({
   button.textContent = textContent;
   button.disabled = disabled;
   if (onClick) {
-    button.addEventListener('click', onClick);
+    button.addEventListener('click', (event) => {
+      void onClick(event);
+    });
   }
 
   return button;
