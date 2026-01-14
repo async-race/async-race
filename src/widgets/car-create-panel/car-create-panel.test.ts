@@ -1,6 +1,7 @@
 import { CarCreatePanel } from './car-create-panel';
 import { describe, it, expect, vi } from 'vitest';
 import * as CarCreateFeature from '../../features/car-create/car-create';
+import * as userNotification from '../../features/notify-user/notify-user';
 
 describe('CarCreatePanel Component', () => {
   it('should render form wrapper with inputs and button', () => {
@@ -75,10 +76,7 @@ describe('CarCreatePanel Component', () => {
       handleCreate: mockHandleCreate,
     });
 
-    const alertMock = vi
-      .spyOn(globalThis, 'alert')
-      .mockImplementation(() => {});
-
+    const notifyMock = vi.spyOn(userNotification, 'notifyUser');
     const panel = CarCreatePanel();
     const buttonCreate =
       panel.querySelector<HTMLButtonElement>('.button-create');
@@ -86,7 +84,7 @@ describe('CarCreatePanel Component', () => {
     buttonCreate?.click();
 
     await vi.waitFor(() => {
-      expect(alertMock).toHaveBeenCalledWith(
+      expect(notifyMock).toHaveBeenCalledWith(
         "The car wasn't created! Unknown error",
       );
     });
