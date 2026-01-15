@@ -8,8 +8,8 @@ describe('CarCreatePanel Component', () => {
     const panel = CarCreatePanel();
 
     expect(panel).toBeInstanceOf(HTMLElement);
-    expect(panel.querySelector('.car-model-input')).toBeTruthy();
-    expect(panel.querySelector('.car-color-input')).toBeTruthy();
+    expect(panel.querySelector('.car-model-input-create')).toBeTruthy();
+    expect(panel.querySelector('.car-color-input-create')).toBeTruthy();
     expect(panel.querySelector('.button-create')).toBeTruthy();
   });
 
@@ -45,10 +45,12 @@ describe('CarCreatePanel Component', () => {
     });
 
     const panel = CarCreatePanel();
-    const modelInput =
-      panel.querySelector<HTMLInputElement>('.car-model-input');
-    const colorInput =
-      panel.querySelector<HTMLInputElement>('.car-color-input');
+    const modelInput = panel.querySelector<HTMLInputElement>(
+      '.car-model-input-create',
+    );
+    const colorInput = panel.querySelector<HTMLInputElement>(
+      '.car-color-input-create',
+    );
     const buttonCreate =
       panel.querySelector<HTMLButtonElement>('.button-create');
 

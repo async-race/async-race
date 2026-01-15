@@ -14,16 +14,17 @@ export function CarCreatePanel(): HTMLElement {
   const carModelInput = Input({
     id: 'car-model',
     name: 'car-model',
-    extraClasses: 'car-model-input',
+    extraClasses: 'car-model-input-create',
   });
   const carColorInput = Input({
     type: 'color',
     id: 'car-color',
     name: 'car-color',
-    extraClasses: 'car-color-input',
+    extraClasses: 'car-color-input-create',
   });
   const buttonCreate = Button({
     textContent: 'create',
+    extraClasses: 'button-create',
     async onClick() {
       try {
         const name = resolveName(carModelInput.value);
@@ -41,7 +42,6 @@ export function CarCreatePanel(): HTMLElement {
         );
       }
     },
-    extraClasses: 'button-create',
   });
 
   createFormWrapper.append(carModelInput, carColorInput, buttonCreate);
