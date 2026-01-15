@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { CarCreate } from './car-create';
+import { carCreate } from './car-create';
 import * as carApi from '@/entities/car/api/car.api';
 
 describe('CarCreate', () => {
@@ -9,7 +9,7 @@ describe('CarCreate', () => {
       .spyOn(carApi, 'createCar')
       .mockResolvedValue({ data: mockCar });
 
-    const { handleCreate } = CarCreate();
+    const { handleCreate } = carCreate();
     const result = await handleCreate('Tesla', '#ff0000');
 
     expect(spy).toHaveBeenCalledWith({ name: 'Tesla', color: '#ff0000' });

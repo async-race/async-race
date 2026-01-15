@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { CarUpdate } from './car-update';
-import { CarCreate } from '../car-create/car-create';
+import { carUpdate } from './car-update';
+import { carCreate } from '../car-create/car-create';
 import * as carApi from '@/entities/car/api/car.api';
 
 describe('CarUpdate', () => {
@@ -11,7 +11,7 @@ describe('CarUpdate', () => {
       .spyOn(carApi, 'createCar')
       .mockResolvedValue({ data: mockCar });
 
-    const { handleCreate } = CarCreate();
+    const { handleCreate } = carCreate();
     const result = await handleCreate('Tesla', '#ff0000');
 
     expect(spy).toHaveBeenCalledWith({ name: 'Tesla', color: '#ff0000' });
@@ -21,7 +21,7 @@ describe('CarUpdate', () => {
       .spyOn(carApi, 'updateCar')
       .mockResolvedValue({ data: mockCar2 });
 
-    const { handleUpdate } = CarUpdate();
+    const { handleUpdate } = carUpdate();
     const result2 = await handleUpdate(1, 'lada', '#000000');
 
     expect(spy2).toHaveBeenCalledWith(1, { name: 'lada', color: '#000000' });

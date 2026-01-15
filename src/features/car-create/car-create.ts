@@ -5,6 +5,6 @@ export async function handleCreate(name: string, color: string) {
   return newCar;
 }
 
-export function CarCreate() {
+export function carCreate() {
   return { handleCreate };
 }

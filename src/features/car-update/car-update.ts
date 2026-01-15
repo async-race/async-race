@@ -5,6 +5,6 @@ export async function handleUpdate(id: number, name: string, color: string) {
   return updatedCar;
 }
 
-export function CarUpdate() {
+export function carUpdate() {
   return { handleUpdate };
 }
