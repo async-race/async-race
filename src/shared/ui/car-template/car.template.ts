@@ -1,10 +1,8 @@
 import type { Car } from '@/entities/car/model/types';
 
-export function carSvg({ id, name, color }: Car): SVGSVGElement {
+export function carSvg({ color }: Pick<Car, 'color'>): SVGSVGElement {
   const car = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  car.setAttribute('id', `${id}`);
-  car.setAttribute('name', `${name}`);
-  car.setAttribute('fill', `${color}`);
+  car.setAttribute('fill', color);
   car.setAttribute('width', '50');
   car.setAttribute('height', '50px');
   car.setAttribute('viewBox', '0 -64 640 640');
