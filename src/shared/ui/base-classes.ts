@@ -8,7 +8,7 @@ export const baseClasses: Record<string, string> = {
   input:
     'w-full sm:w-1/2 md:w-1/3 px-3 py-2 border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 hover:shadow-md bg-gray-50 sm:text-base sm:px-4 sm:py-2 md:text-lg md:px-5 md:py-3',
   button:
-    'bg-sky-400 hover:bg-sky-700 p-2 w-18 sm:w-28 md:w-34 text-base sm:text-lg md:text-xl text-white rounded-2xl transition-colors duration-300 flex items-center justify-center',
+    'bg-sky-400 hover:bg-sky-700 p-2 w-18 sm:w-28 md:w-34 text-base sm:text-lg md:text-xl text-white rounded-2xl transition-colors duration-300 flex items-center justify-center disabled:bg-gray-400',
   a: 'bg-sky-400 hover:bg-sky-700 p-2 w-18 sm:w-28 md:w-34 text-base sm:text-lg md:text-xl text-white rounded-2xl transition-colors duration-300 flex items-center justify-center no-underline',
   img: 'max-w-full h-auto object-cover',
 };
