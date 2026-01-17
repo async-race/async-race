@@ -12,3 +12,10 @@ export type UpdateWinnerDto = {
   wins: number;
   time: number;
 };
+
+export type WinnersQuery = {
+  page?: number;
+  limit?: number;
+  sort?: 'id' | 'wins' | 'time';
+  order?: 'ASC' | 'DESC';
+};

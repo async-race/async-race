@@ -5,14 +5,10 @@ import type {
   WinnerId,
   CreateWinnerDto,
   UpdateWinnerDto,
+  WinnersQuery,
 } from '../model/types';
 
-export async function getWinners(parameters?: {
-  page?: number;
-  limit?: number;
-  sort?: 'id' | 'wins' | 'time';
-  order?: 'ASC' | 'DESC';
-}): Promise<{
+export async function getWinners(parameters?: WinnersQuery): Promise<{
   items: Winner[];
   total: number;
 }> {

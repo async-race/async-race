@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { carUpdate } from './car-update';
-import { carCreate } from '../car-create/car-create';
+import { carUpdate } from './update';
+import { carCreate } from '../create/model/create';
 import * as carApi from '@/entities/car/api/car.api';
 
 describe('CarUpdate', () => {
