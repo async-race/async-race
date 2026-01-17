@@ -17,7 +17,9 @@ export function Button({
   button.textContent = textContent;
   button.disabled = disabled;
   if (onClick) {
-    button.addEventListener('click', onClick);
+    button.addEventListener('click', (event) => {
+      onClick(event);
+    });
   }
 
   return button;
