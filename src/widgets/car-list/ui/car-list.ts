@@ -12,7 +12,6 @@ export function carList(cars: Car[]) {
   cars.forEach((car) => {
     const carContainer = BlockComponent({
       tagName: 'div',
-      id: String(car.id),
     });
     const newCar = carSvg(car);
     const label = BlockComponent({ tagName: 'p', textContent: car.name });
