@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { car } from '@/entities';
-import { createCar } from './create';
+import { updateCar } from './update';
 import * as loadModule from '../../load/model/load';
 
 describe('CarCreate', () => {
@@ -9,7 +9,7 @@ describe('CarCreate', () => {
   });
 
   it('should call car.createCar with correct args and then loadCars', async () => {
-    const createSpy = vi.spyOn(car, 'createCar').mockResolvedValue({
+    const updateSpy = vi.spyOn(car, 'updateCar').mockResolvedValue({
       data: {
         id: 1,
         name: 'test',
@@ -19,10 +19,10 @@ describe('CarCreate', () => {
 
     const loadSpy = vi.spyOn(loadModule, 'loadCars').mockResolvedValue();
 
-    await createCar({ name: 'Tesla', color: '#ff0000' });
+    await updateCar(1, { name: 'Tesla', color: '#ff0000' });
 
-    expect(createSpy).toHaveBeenCalledTimes(1);
-    expect(createSpy).toHaveBeenCalledWith({
+    expect(updateSpy).toHaveBeenCalledTimes(1);
+    expect(updateSpy).toHaveBeenCalledWith(1, {
       name: 'Tesla',
       color: '#ff0000',
     });

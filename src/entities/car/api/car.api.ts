@@ -1,11 +1,14 @@
 import { request } from '@/shared/api/http';
 import { endpoints } from '@/shared/api/endpoints';
-import type { Car, CarId, CreateCarDto, UpdateCarDto } from '../model/types';
+import type {
+  Car,
+  CarId,
+  CarsQuery,
+  CreateCarDto,
+  UpdateCarDto,
+} from '../model/types';
 
-export async function getCars(parameters?: {
-  page?: number;
-  limit?: number;
-}): Promise<{
+export async function getCars(parameters?: CarsQuery): Promise<{
   items: Car[];
   total: number;
 }> {

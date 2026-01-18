@@ -1,34 +1,47 @@
-import { describe, it, expect, vi } from 'vitest';
+import '@/shared/test/mock';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { carPanel } from './car-create-panel';
 
 describe('carPanel', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+  });
+
   it('should render wrapper with inputs and button', () => {
     const panel = carPanel('create', vi.fn());
+    document.body.append(panel.element);
 
-    expect(panel).toBeInstanceOf(HTMLElement);
-
-    const modelInput = panel.querySelector<HTMLInputElement>('#car-model');
-    const colorInput = panel.querySelector<HTMLInputElement>('#car-color');
-    const button = panel.querySelector<HTMLButtonElement>('button');
+    const modelInput =
+      panel.element.querySelector<HTMLInputElement>('#car-model');
+    const colorInput =
+      panel.element.querySelector<HTMLInputElement>('#car-color');
+    const button = panel.element.querySelector<HTMLButtonElement>('button');
 
     expect(modelInput).toBeTruthy();
     expect(colorInput).toBeTruthy();
     expect(button).toBeTruthy();
-    expect(button?.textContent).toBe('create');
+    expect(button?.textContent).toBe('CREATE');
   });
 
   it('should call onSubmit with values when type=create', () => {
     const mockOnSubmit = vi.fn();
     const panel = carPanel('create', mockOnSubmit);
+    document.body.append(panel.element);
 
-    const modelInput = panel.querySelector<HTMLInputElement>('#car-model');
-    const colorInput = panel.querySelector<HTMLInputElement>('#car-color');
-    const button = panel.querySelector<HTMLButtonElement>('button');
+    const modelInput =
+      panel.element.querySelector<HTMLInputElement>('#car-model');
+    const colorInput =
+      panel.element.querySelector<HTMLInputElement>('#car-color');
+    const button = panel.element.querySelector<HTMLButtonElement>('button');
 
-    if (modelInput) modelInput.value = 'Lada';
-    if (colorInput) colorInput.value = '#ff0000';
+    if (!modelInput || !colorInput || !button) {
+      throw new Error('Elements not found');
+    }
 
-    button?.click();
+    modelInput.value = 'Lada';
+    colorInput.value = '#ff0000';
+
+    button.click();
 
     expect(mockOnSubmit).toHaveBeenCalledWith({
       name: 'Lada',
@@ -39,29 +52,41 @@ describe('carPanel', () => {
   it('should call onSubmit with values when type=update', () => {
     const mockOnSubmit = vi.fn();
     const panel = carPanel('update', mockOnSubmit);
+    document.body.append(panel.element);
 
-    const modelInput = panel.querySelector<HTMLInputElement>('#car-model');
-    const colorInput = panel.querySelector<HTMLInputElement>('#car-color');
-    const button = panel.querySelector<HTMLButtonElement>('button');
+    const modelInput =
+      panel.element.querySelector<HTMLInputElement>('#car-model');
+    const colorInput =
+      panel.element.querySelector<HTMLInputElement>('#car-color');
+    const button = panel.element.querySelector<HTMLButtonElement>('button');
 
-    if (modelInput) modelInput.value = 'Audi';
-    if (colorInput) colorInput.value = '#00ff00';
+    if (!modelInput || !colorInput || !button) {
+      throw new Error('Elements not found');
+    }
 
-    button?.click();
+    modelInput.value = 'Audi';
+    colorInput.value = '#00ff00';
+
+    button.click();
 
     expect(mockOnSubmit).toHaveBeenCalledWith({
       name: 'Audi',
       color: '#00ff00',
     });
-    expect(button?.textContent).toBe('update');
+    expect(button.textContent).toBe('UPDATE');
   });
 
-  it('should submit empty strings if inputs are not filled', () => {
+  it('should submit empty values by default', () => {
     const mockOnSubmit = vi.fn();
     const panel = carPanel('create', mockOnSubmit);
+    document.body.append(panel.element);
 
-    const button = panel.querySelector<HTMLButtonElement>('button');
-    button?.click();
+    const button = panel.element.querySelector<HTMLButtonElement>('button');
+    if (!button) {
+      throw new Error('Button not found');
+    }
+
+    button.click();
 
     expect(mockOnSubmit).toHaveBeenCalledWith({
       name: '',
