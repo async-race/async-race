@@ -23,3 +23,8 @@ export type EngineStartResponse = {
 export type EngineDriveResponse = {
   success: boolean;
 };
+
+export type CarsQuery = {
+  page?: number;
+  limit?: number;
+};
