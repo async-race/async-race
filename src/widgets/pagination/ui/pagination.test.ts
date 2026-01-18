@@ -1,34 +1,6 @@
+import '@/shared/test/mock';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createPagination } from './pagination';
-
-vi.mock('@/shared/ui/button/button', () => ({
-  Button: vi.fn(
-    ({
-      textContent,
-      onClick,
-    }: {
-      textContent: string;
-      onClick?: (event: MouseEvent | KeyboardEvent) => void;
-    }) => {
-      const button = document.createElement('button');
-      button.textContent = textContent;
-      if (onClick) {
-        button.addEventListener('click', onClick);
-      }
-      return button;
-    },
-  ),
-}));
-
-vi.mock('@/shared/ui/block-component/block-component', () => ({
-  BlockComponent: vi.fn(
-    ({ tagName, extraClasses }: { tagName: string; extraClasses?: string }) => {
-      const element = document.createElement(tagName);
-      element.className = extraClasses ?? '';
-      return element;
-    },
-  ),
-}));
 
 describe('createPagination', () => {
   let page: number;
@@ -43,7 +15,7 @@ describe('createPagination', () => {
   it('should render pagination container with buttons', () => {
     const pagination = createPagination({
       getPage: () => page,
-      total: 10,
+      getTotal: () => 10,
       pageSize: 2,
       onChange,
     });
@@ -61,7 +33,7 @@ describe('createPagination', () => {
   it('should disable previous button on first page', () => {
     const pagination = createPagination({
       getPage: () => page,
-      total: 10,
+      getTotal: () => 10,
       pageSize: 2,
       onChange,
     });
@@ -76,7 +48,7 @@ describe('createPagination', () => {
 
     const pagination = createPagination({
       getPage: () => page,
-      total: 10,
+      getTotal: () => 10,
       pageSize: 2,
       onChange,
     });
@@ -92,7 +64,7 @@ describe('createPagination', () => {
 
     const pagination = createPagination({
       getPage: () => page,
-      total: 10,
+      getTotal: () => 10,
       pageSize: 2,
       onChange,
     });
@@ -110,7 +82,7 @@ describe('createPagination', () => {
 
     const pagination = createPagination({
       getPage: () => page,
-      total: 10,
+      getTotal: () => 10,
       pageSize: 2,
       onChange,
     });
@@ -129,7 +101,7 @@ describe('createPagination', () => {
 
     const pagination = createPagination({
       getPage: () => page,
-      total: 10,
+      getTotal: () => 10,
       pageSize: 2,
       onChange,
     });
@@ -144,7 +116,7 @@ describe('createPagination', () => {
   it('should update disabled state and current page on update()', () => {
     const pagination = createPagination({
       getPage: () => page,
-      total: 10,
+      getTotal: () => 10,
       pageSize: 2,
       onChange,
     });

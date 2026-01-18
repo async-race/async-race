@@ -1,18 +1,32 @@
-import { describe, it, expect, vi } from 'vitest';
-import { carCreate } from './create';
-import * as carApi from '@/entities/car/api/car.api';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { car } from '@/entities';
+import { createCar } from './create';
+import * as loadModule from '../../load/model/load';
 
 describe('CarCreate', () => {
-  it('should call createCar with correct arguments and return result', async () => {
-    const mockCar = { id: 1, name: 'Tesla', color: '#ff0000' };
-    const spy = vi
-      .spyOn(carApi, 'createCar')
-      .mockResolvedValue({ data: mockCar });
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
 
-    const { handleCreate } = carCreate();
-    const result = await handleCreate('Tesla', '#ff0000');
+  it('should call car.createCar with correct args and then loadCars', async () => {
+    const createSpy = vi.spyOn(car, 'createCar').mockResolvedValue({
+      data: {
+        id: 1,
+        name: 'test',
+        color: '#010101',
+      },
+    });
 
-    expect(spy).toHaveBeenCalledWith({ name: 'Tesla', color: '#ff0000' });
-    expect(result).toEqual({ data: mockCar });
+    const loadSpy = vi.spyOn(loadModule, 'loadCars').mockResolvedValue();
+
+    await createCar({ name: 'Tesla', color: '#ff0000' });
+
+    expect(createSpy).toHaveBeenCalledTimes(1);
+    expect(createSpy).toHaveBeenCalledWith({
+      name: 'Tesla',
+      color: '#ff0000',
+    });
+
+    expect(loadSpy).toHaveBeenCalledTimes(1);
   });
 });
