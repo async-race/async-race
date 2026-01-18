@@ -1,3 +1,4 @@
+import { winnersStore } from '@/entities';
 import { BlockComponent } from '@/shared/ui/block-component/block-component';
 import { createPagination } from '@/widgets/pagination/ui/pagination';
 
@@ -19,9 +20,12 @@ export function createWinnersPage() {
 
   const pagination = createPagination({
     getPage: () => currentPage,
-    total: 100,
     pageSize: WINNERS_ON_PAGE,
     onChange: onPageChange,
+    getTotal: () => {
+      const { total } = winnersStore.get();
+      return total;
+    },
   });
 
   page.append(pagination.element);

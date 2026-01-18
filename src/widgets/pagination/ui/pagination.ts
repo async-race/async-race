@@ -4,11 +4,14 @@ import { BlockComponent } from '@/shared/ui/block-component/block-component';
 
 export function createPagination({
   getPage,
-  total,
+  getTotal,
   pageSize,
   onChange,
 }: PaginationProps) {
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  function calculateTotalPages(): number {
+    const total = getTotal();
+    return Math.max(1, Math.ceil(total / pageSize));
+  }
 
   const container = BlockComponent({
     tagName: 'div',
@@ -27,6 +30,7 @@ export function createPagination({
     textContent: '»',
     onClick: () => {
       const page = getPage();
+      const totalPages = calculateTotalPages();
       if (page < totalPages) onChange(page + 1);
     },
   });
@@ -37,6 +41,7 @@ export function createPagination({
 
   function update() {
     const page = getPage();
+    const totalPages = calculateTotalPages();
     const isPreviousDisabled = page <= 1;
     const isNextDisabled = page >= totalPages;
     previousButton.disabled = isPreviousDisabled;
