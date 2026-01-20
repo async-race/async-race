@@ -12,12 +12,17 @@ export function createWinnersPage() {
     extraClasses: 'flex flex-col',
   });
 
-  let currentPage = 1;
-
   const indexPage = BlockComponent({
     tagName: 'h4',
-    textContent: `Page # ${currentPage}`,
+    textContent: `Page # ${winnersQueryStore.get().page ?? 1}`,
   });
+
+  let tableElement = BlockComponent({ tagName: 'div' });
+
+  void initWinners();
+  const pagination = initPagination();
+
+  winnerPage.append(indexPage, tableElement, pagination.element);
 
   function renderTable(winnersWithCars: WinnersWithCars[]): HTMLElement {
     const { sort = 'wins', order = 'DESC', page = 1 } = winnersQueryStore.get();
@@ -33,29 +38,28 @@ export function createWinnersPage() {
     });
   }
 
-  let tableElement = BlockComponent({ tagName: 'div' });
+  function initPagination() {
+    const onPageChange = (page: number) => {
+      winnersQueryStore.set({ page });
+      indexPage.textContent = `Page # ${page}`;
+      paginationElement.update();
+    };
 
-  const onPageChange = async (pageNum: number) => {
-    currentPage = pageNum;
-    winnersQueryStore.set({ page: pageNum });
-    pagination.update();
-    indexPage.textContent = `Page # ${currentPage}`;
-    const winnersWithCars = await getWinnersWithCars(
-      winnersStore.get().winners,
-    );
-    const newTable = renderTable(winnersWithCars);
-    winnerPage.replaceChild(newTable, tableElement);
-    tableElement = newTable;
-  };
+    const paginationElement = createPagination({
+      getPage: () => {
+        const { page } = winnersQueryStore.get();
+        return page;
+      },
+      getTotal: () => {
+        const { total } = winnersStore.get();
+        return total;
+      },
+      pageSize: WINNERS_ON_PAGE,
+      onChange: onPageChange,
+    });
 
-  const pagination = createPagination({
-    getPage: () => currentPage,
-    pageSize: WINNERS_ON_PAGE,
-    onChange: onPageChange,
-    getTotal: () => winnersStore.get().total,
-  });
-
-  void initWinners();
+    return paginationElement;
+  }
 
   winnersStore.subscribe(async () => {
     const winnersWithCars = await getWinnersWithCars(
@@ -65,8 +69,6 @@ export function createWinnersPage() {
     winnerPage.replaceChild(newTable, tableElement);
     tableElement = newTable;
   });
-
-  winnerPage.append(indexPage, tableElement, pagination.element);
 
   return {
     element: winnerPage,
