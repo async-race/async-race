@@ -1,5 +1,5 @@
 export const baseClasses: Record<string, string> = {
-  div: 'p-2 sm:p-4 md:p-6 w-full sm:w-2/3 md:w-1/2 text-sm sm:text-base md:text-lg',
+  div: 'p-2 text-sm sm:text-base md:text-lg',
   p: 'p-2 sm:p-4 md:p-6 w-full sm:w-2/3 md:w-1/2 text-sm sm:text-base md:text-lg',
   h1: 'font-bold leading-tight mb-2 text-2xl sm:text-3xl md:text-4xl',
   h2: 'font-bold leading-tight mb-2 text-xl sm:text-2xl md:text-3xl',
