@@ -22,7 +22,7 @@ export function winnerTable({
 }: WinnerTableProps) {
   const container = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex flex-col min-h-[400px]',
+    extraClasses: 'flex flex-col',
   });
 
   const headerRow = BlockComponent({
@@ -67,7 +67,7 @@ export function winnerTable({
         tagName: 'div',
         textContent: String(start + index + 1),
       }),
-      carSvg({ color: winner.color }),
+      carSvg({ color: winner.color, size: 35 }),
       BlockComponent({ tagName: 'div', textContent: winner.name }),
       BlockComponent({ tagName: 'div', textContent: String(winner.wins) }),
       BlockComponent({ tagName: 'div', textContent: String(winner.time) }),
