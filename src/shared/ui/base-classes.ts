@@ -11,5 +11,5 @@ export const baseClasses: Record<string, string> = {
     'bg-sky-400 hover:bg-sky-700 p-2 text-base sm:text-lg md:text-xl text-white rounded-2xl transition-colors duration-300 flex items-center justify-center disabled:bg-gray-400',
   a: 'bg-sky-400 hover:bg-sky-700 p-2 w-18 sm:w-28 md:w-34 text-base sm:text-lg md:text-xl text-white rounded-2xl transition-colors duration-300 flex items-center justify-center no-underline',
   img: 'max-w-full h-auto object-cover',
-  span: 'fixed bottom-5 right-5 bg-[#333] text-white px-4 py-2 rounded shadow-md opacity-0 transition-opacity duration-300 ease-in-out pointer-events-none text-sm max-w-xs',
+  span: 'text-black',
 };

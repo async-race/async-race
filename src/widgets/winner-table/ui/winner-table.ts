@@ -1,8 +1,9 @@
 import type { WinnersWithCars } from '@/pages/model/types';
 import { BlockComponent } from '@/shared/ui/block-component/block-component';
 import { carSvg } from '@/shared/ui/car-template/car.template';
+import { winnerTableHeader } from '@/widgets/winner-table-header/ui/winner-table-header';
 
-type WinnerTableProps = {
+export type WinnerTableProps = {
   winners: WinnersWithCars[];
   page: number;
   pageSize: number;
@@ -29,27 +30,20 @@ export function winnerTable({
     extraClasses: 'grid grid-cols-5 font-bold bg-gray-200 py-1 px-2',
   });
 
-  const winsHeader = BlockComponent({
-    tagName: 'div',
-    extraClasses: 'flex items-center gap-1 cursor-pointer',
-    textContent:
-      'Wins' + (sort === 'wins' ? (order === 'ASC' ? ' ▲' : ' ▼') : ''),
-    onClick: () => {
-      const newOrder = sort === 'wins' && order === 'ASC' ? 'DESC' : 'ASC';
-      onSortChange('wins', newOrder);
-    },
+  const winsHeader = winnerTableHeader({
+    text: 'Wins',
+    headerField: 'wins',
+    sort,
+    order,
+    onSortChange,
   });
 
-  const timeHeader = BlockComponent({
-    tagName: 'div',
-    extraClasses: 'flex items-center gap-1 cursor-pointer',
-    textContent:
-      'Best time (s)' +
-      (sort === 'time' ? (order === 'ASC' ? ' ▲' : ' ▼') : ''),
-    onClick: () => {
-      const newOrder = sort === 'time' && order === 'ASC' ? 'DESC' : 'ASC';
-      onSortChange('time', newOrder);
-    },
+  const timeHeader = winnerTableHeader({
+    text: 'Best time (s)',
+    headerField: 'time',
+    sort,
+    order,
+    onSortChange,
   });
 
   headerRow.append(
