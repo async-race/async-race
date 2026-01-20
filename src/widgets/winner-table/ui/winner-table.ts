@@ -63,11 +63,14 @@ export function winnerTable({
     });
 
     row.append(
-      BlockComponent({ tagName: 'div', textContent: `${start + index + 1}` }),
+      BlockComponent({
+        tagName: 'div',
+        textContent: String(start + index + 1),
+      }),
       carSvg({ color: winner.color }),
       BlockComponent({ tagName: 'div', textContent: winner.name }),
-      BlockComponent({ tagName: 'div', textContent: `${winner.wins}` }),
-      BlockComponent({ tagName: 'div', textContent: `${winner.time}` }),
+      BlockComponent({ tagName: 'div', textContent: String(winner.wins) }),
+      BlockComponent({ tagName: 'div', textContent: String(winner.time) }),
     );
 
     container.append(row);
