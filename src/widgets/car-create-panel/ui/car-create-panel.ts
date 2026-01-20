@@ -3,30 +3,54 @@ import { Input } from '@/shared/ui/input/input';
 import { Button } from '@/shared/ui/button/button';
 import type { UpdateCarDto } from '@/entities/car/model/types';
 
-export function carPanel(
-  type: 'create' | 'update',
-  onSubmit: ({ name, color }: UpdateCarDto) => void,
-): HTMLElement {
-  const createFormWrapper = BlockComponent({
-    tagName: 'div',
-  });
-  const carModelInput = Input({
+const createInputs = () => ({
+  carName: Input({
     id: 'car-model',
     name: 'car-model',
-  });
-  const carColorInput = Input({
+  }),
+  carColor: Input({
     type: 'color',
     id: 'car-color',
     name: 'car-color',
+    extraClasses: 'w-15 h-12',
+  }),
+});
+
+export function carPanel(
+  type: 'create' | 'update',
+  onSubmit: ({ name, color }: UpdateCarDto) => void,
+) {
+  const widgetContainer = BlockComponent({
+    tagName: 'div',
+    extraClasses: 'flex gap-2',
   });
-  const buttonCreate = Button({
-    textContent: type,
+  const input = createInputs();
+  const button = Button({
+    textContent: type.toUpperCase(),
     onClick() {
-      onSubmit({ name: carModelInput.value, color: carColorInput.value });
+      onSubmit({ name: input.carName.value, color: input.carColor.value });
+      resetValues();
     },
   });
 
-  createFormWrapper.append(carModelInput, carColorInput, buttonCreate);
+  function resetValues() {
+    input.carName.value = '';
+    input.carColor.value = '#000000';
+  }
 
-  return createFormWrapper;
+  function setDisabled(isDisabled: boolean) {
+    if (isDisabled) resetValues();
+    input.carName.disabled = isDisabled;
+    input.carColor.disabled = isDisabled;
+    button.disabled = isDisabled;
+  }
+
+  function setValues(values: UpdateCarDto) {
+    input.carName.value = values.name;
+    input.carColor.value = values.color;
+  }
+
+  widgetContainer.append(input.carName, input.carColor, button);
+
+  return { element: widgetContainer, setDisabled, setValues };
 }

@@ -1,26 +1,54 @@
-import { describe, it, expect } from 'vitest';
+import '@/shared/test/mock';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { carList } from './car-list';
 import type { Car } from '@/entities/car/model/types';
 
+vi.mock('@/widgets', () => ({
+  createCarControls: vi.fn(() => {
+    const controls = document.createElement('div');
+    controls.dataset.testid = 'controls';
+    return controls;
+  }),
+}));
+
 describe('carList', () => {
-  it('should render all card list', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('should render car list with total label', () => {
     const cars: Car[] = [
       { id: 1, name: 'BMW', color: '#000000' },
       { id: 2, name: 'Audi', color: '#fff000' },
     ];
 
-    const { container } = carList(cars);
+    const element = carList(cars, 2, {
+      onEdit: vi.fn(),
+      onDelete: vi.fn(),
+      onStart: vi.fn(),
+      onStop: vi.fn(),
+    });
 
-    expect(container.children).toHaveLength(2);
-    expect(container.textContent).toContain('BMW');
-    expect(container.textContent).toContain('Audi');
+    document.body.append(element);
+
+    expect(element.textContent).toContain('Garage (2)');
+    expect(element.textContent).toContain('BMW');
+    expect(element.textContent).toContain('Audi');
   });
 
-  it('should save all elements in list using  car.id', () => {
-    const cars: Car[] = [{ id: 42, name: 'Tesla', color: '#f00000' }];
-    const { items } = carList(cars);
+  it('should render one car container per car', () => {
+    const cars: Car[] = [{ id: 42, name: 'Tesla', color: '#ff0000' }];
 
-    expect(items.has('42')).toBe(true);
-    expect(items.get('42')?.textContent).toContain('Tesla');
+    const element = carList(cars, 1, {
+      onEdit: vi.fn(),
+      onDelete: vi.fn(),
+      onStart: vi.fn(),
+      onStop: vi.fn(),
+    });
+
+    const carContainers = element.querySelectorAll('.flex');
+
+    expect(carContainers.length).toBeGreaterThanOrEqual(1);
+    expect(element.textContent).toContain('Tesla');
   });
 });

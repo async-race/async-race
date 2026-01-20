@@ -1,22 +1,20 @@
-import type { WinnersQuery } from './types';
+import type { CarsQuery } from './types';
 
-export const WINNERS_ON_PAGE = 10;
+export const CARS_ON_PAGE = 7;
 
-let query: Required<WinnersQuery> = {
+let query: Required<CarsQuery> = {
   page: 1,
-  limit: WINNERS_ON_PAGE,
-  sort: 'wins',
-  order: 'DESC',
+  limit: CARS_ON_PAGE,
 };
 
 const listeners = new Set<() => void>();
 
-export const winnersQueryStore = {
+export const carsQueryStore = {
   get() {
     return query;
   },
 
-  set(patch: Partial<WinnersQuery>) {
+  set(patch: Partial<CarsQuery>) {
     query = { ...query, ...patch };
     listeners.forEach((listener) => {
       listener();

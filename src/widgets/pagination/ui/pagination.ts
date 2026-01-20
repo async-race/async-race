@@ -15,8 +15,10 @@ export function createPagination({
 
   const container = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex gap-4',
+    extraClasses: 'flex gap-4 justify-center',
   });
+
+  const className = 'min-w-10';
 
   const previousButton = Button({
     textContent: '«',
@@ -24,6 +26,7 @@ export function createPagination({
       const page = getPage();
       if (page > 1) onChange(page - 1);
     },
+    extraClasses: className,
   });
 
   const nextButton = Button({
@@ -33,9 +36,14 @@ export function createPagination({
       const totalPages = calculateTotalPages();
       if (page < totalPages) onChange(page + 1);
     },
+    extraClasses: className,
   });
 
-  const currentPage = Button({ textContent: '1' });
+  const currentPage = Button({
+    textContent: '1',
+    disabled: true,
+    extraClasses: className,
+  });
 
   container.append(previousButton, currentPage, nextButton);
 

@@ -9,7 +9,7 @@ export function startApp(rootElement: Element) {
   rootElement.classList.add('app-root');
   const main = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex',
+    extraClasses: 'flex flex-1 justify-center',
   });
   const header = createHeader();
   const footer = createFooter();
