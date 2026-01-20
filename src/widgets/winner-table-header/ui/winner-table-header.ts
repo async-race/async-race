@@ -22,15 +22,16 @@ export function winnerTableHeader({
     tagName: 'div',
     extraClasses: 'flex items-center gap-3 cursor-pointer select-none',
     onClick: () => {
-      const newOrder = isActive && order === 'ASC' ? 'DESC' : 'ASC';
+      if (!isActive) {
+        onSortChange(headerField, 'ASC');
+        return;
+      }
+      const newOrder = order === 'ASC' ? 'DESC' : 'ASC';
       onSortChange(headerField, newOrder);
     },
   });
 
-  const label = BlockComponent({
-    tagName: 'span',
-    textContent: text,
-  });
+  const label = BlockComponent({ tagName: 'span', textContent: text });
 
   const arrowUp = BlockComponent({
     tagName: 'span',
@@ -38,6 +39,10 @@ export function winnerTableHeader({
     extraClasses: `text-xs transition-opacity ${
       isActive && order === 'ASC' ? 'opacity-100' : 'opacity-30'
     }`,
+    onClick: (event: Event) => {
+      event.stopPropagation();
+      onSortChange(headerField, 'ASC');
+    },
   });
 
   const arrowDown = BlockComponent({
@@ -46,6 +51,10 @@ export function winnerTableHeader({
     extraClasses: `text-xs transition-opacity ${
       isActive && order === 'DESC' ? 'opacity-100' : 'opacity-30'
     }`,
+    onClick: (event: Event) => {
+      event.stopPropagation();
+      onSortChange(headerField, 'DESC');
+    },
   });
 
   header.append(label, arrowUp, arrowDown);

@@ -30,7 +30,7 @@ export function createWinnersPage() {
       winners: winnersWithCars,
       page: page,
       pageSize: WINNERS_ON_PAGE,
-      sort,
+      sort: sort === 'id' ? '' : sort,
       order,
       onSortChange: (field, newOrder) => {
         winnersQueryStore.set({ sort: field, order: newOrder });
@@ -67,7 +67,8 @@ export function createWinnersPage() {
         winnersStore.get().winners,
       );
       const newTable = renderTable(winnersWithCars);
-      tableElement.replaceWith(newTable);
+      tableElement.innerHTML = '';
+      tableElement.append(newTable);
     })();
   });
 

@@ -7,7 +7,7 @@ export type WinnerTableProps = {
   winners: WinnersWithCars[];
   page: number;
   pageSize: number;
-  sort: string;
+  sort: '' | 'wins' | 'time';
   order: 'ASC' | 'DESC';
   onSortChange: (field: 'wins' | 'time', order: 'ASC' | 'DESC') => void;
 };

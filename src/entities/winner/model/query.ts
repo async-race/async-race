@@ -5,7 +5,7 @@ export const WINNERS_ON_PAGE = 10;
 let query: Required<WinnersQuery> = {
   page: 1,
   limit: WINNERS_ON_PAGE,
-  sort: 'wins',
+  sort: '',
   order: 'DESC',
 };
 
