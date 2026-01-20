@@ -47,6 +47,7 @@ describe('createWinnersPage', () => {
       ] as WinnersWithCars[],
       total: 2,
     });
+
     (winnersStore.subscribe as Mock).mockImplementation(
       (functionToCall: () => void) => {
         functionToCall();
@@ -58,12 +59,14 @@ describe('createWinnersPage', () => {
 
   it('renders table with headers and rows', () => {
     const headerRow = page.element.querySelector('.grid.grid-cols-5.font-bold');
+
     expect(headerRow).toBeTruthy();
+
     if (!headerRow) {
       throw new Error('headerRow is null');
     }
-    const headerCells = headerRow.querySelectorAll('div');
 
+    const headerCells = headerRow.querySelectorAll('div');
     const texts = [...headerCells].map((element) => {
       const text = element.textContent || '';
       return text.replaceAll('▲▼', '').trim();
@@ -72,6 +75,7 @@ describe('createWinnersPage', () => {
     expect(texts).toEqual(['Number', 'Car', 'Name', 'Wins', 'Best time (s)']);
 
     const rows = page.element.querySelectorAll('.grid.grid-cols-5');
+
     expect(rows.length).toBeGreaterThan(1);
     expect(rows[1].textContent).toContain('Alice');
     expect(rows[2].textContent).toContain('Bob');
@@ -79,17 +83,21 @@ describe('createWinnersPage', () => {
 
   it('show() removes hidden class', () => {
     page.element.classList.add('hidden');
+
     page.show();
+
     expect(page.element.classList.contains('hidden')).toBe(false);
   });
 
   it('hide() adds hidden class', () => {
     page.hide();
+
     expect(page.element.classList.contains('hidden')).toBe(true);
   });
 
   it('updates indexPage text when page changes', () => {
     const header = page.element.querySelector('h4');
+
     expect(header?.textContent).toContain('Page # 1');
 
     (winnersQueryStore.get as Mock).mockReturnValue({
@@ -109,6 +117,7 @@ describe('createWinnersPage', () => {
 
   it('re-renders table when winnersStore.subscribe callback is triggered', async () => {
     let callback: (() => Promise<void>) | undefined;
+
     (winnersStore.subscribe as Mock).mockImplementation(
       (functionToCall: () => Promise<void>) => {
         callback = functionToCall;
@@ -125,11 +134,13 @@ describe('createWinnersPage', () => {
     await callback?.();
 
     const newTable = pageInstance.element.querySelector('.grid.grid-cols-5');
+
     expect(newTable).not.toBe(oldTable);
   });
 
   it('updates indexPage and calls set/update when pagination changes', () => {
     const header = page.element.querySelector('h4');
+
     expect(header).not.toBeNull();
 
     const callArguments = (createPagination as Mock).mock
@@ -150,13 +161,13 @@ describe('createWinnersPage', () => {
 
     const paginationInstance = (createPagination as Mock).mock.results[0]
       .value as PaginationInstance;
+
     expect(paginationInstance.update).toHaveBeenCalled();
   });
 
   it('passes correct getPage and getTotal to pagination', () => {
     const callArguments = (createPagination as Mock).mock
       .calls[0][0] as PaginationProps;
-    expect(callArguments).toBeTruthy();
 
     expect(callArguments).toBeTruthy();
 
@@ -165,12 +176,14 @@ describe('createWinnersPage', () => {
       sort: 'wins',
       order: 'ASC',
     });
+
     expect(callArguments.getPage()).toBe(5);
 
     (winnersStore.get as Mock).mockReturnValue({
       winners: [],
       total: 42,
     });
+
     expect(callArguments.getTotal()).toBe(42);
   });
 });

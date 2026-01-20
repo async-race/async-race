@@ -33,6 +33,7 @@ describe('initWinners', () => {
 
   it('calls winners.loadWinners immediately', async function testImmediateLoad() {
     await initWinners();
+
     expect(winners.loadWinners).toHaveBeenCalledTimes(1);
   });
 

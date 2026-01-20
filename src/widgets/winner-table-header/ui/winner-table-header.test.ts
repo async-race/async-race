@@ -20,7 +20,7 @@ describe('winnerTableHeader', () => {
     const header = winnerTableHeader({
       text: 'Wins',
       headerField: 'wins',
-      sort: 'time', // не совпадает
+      sort: 'time',
       order: 'ASC',
       onSortChange: vi.fn(),
     });
