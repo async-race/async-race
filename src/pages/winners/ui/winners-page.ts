@@ -14,10 +14,10 @@ export function createWinnersPage() {
 
   const indexPage = BlockComponent({
     tagName: 'h4',
-    textContent: `Page # ${winnersQueryStore.get().page ?? 1}`,
+    textContent: `Page # ${String(winnersQueryStore.get().page)}`,
   });
 
-  let tableElement = BlockComponent({ tagName: 'div' });
+  const tableElement = BlockComponent({ tagName: 'div' });
 
   void initWinners();
   const pagination = initPagination();
@@ -25,7 +25,7 @@ export function createWinnersPage() {
   winnerPage.append(indexPage, tableElement, pagination.element);
 
   function renderTable(winnersWithCars: WinnersWithCars[]): HTMLElement {
-    const { sort = 'wins', order = 'DESC', page = 1 } = winnersQueryStore.get();
+    const { sort, order, page } = winnersQueryStore.get();
     return winnerTable({
       winners: winnersWithCars,
       page: page,
@@ -41,7 +41,7 @@ export function createWinnersPage() {
   function initPagination() {
     const onPageChange = (page: number) => {
       winnersQueryStore.set({ page });
-      indexPage.textContent = `Page # ${page}`;
+      indexPage.textContent = `Page # ${String(page)}`;
       paginationElement.update();
     };
 
@@ -61,13 +61,14 @@ export function createWinnersPage() {
     return paginationElement;
   }
 
-  winnersStore.subscribe(async () => {
-    const winnersWithCars = await getWinnersWithCars(
-      winnersStore.get().winners,
-    );
-    const newTable = renderTable(winnersWithCars);
-    winnerPage.replaceChild(newTable, tableElement);
-    tableElement = newTable;
+  winnersStore.subscribe(() => {
+    void (async () => {
+      const winnersWithCars = await getWinnersWithCars(
+        winnersStore.get().winners,
+      );
+      const newTable = renderTable(winnersWithCars);
+      tableElement.replaceWith(newTable);
+    })();
   });
 
   return {
