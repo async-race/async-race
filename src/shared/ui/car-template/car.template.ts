@@ -7,8 +7,8 @@ export function carSvg({
 }): SVGSVGElement {
   const car = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   car.setAttribute('fill', color);
-  car.setAttribute('width', `${String(size)}`);
-  car.setAttribute('height', `${String(size)}`);
+  car.setAttribute('width', String(size));
+  car.setAttribute('height', String(size));
   car.setAttribute('viewBox', '0 -64 640 640');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute(
