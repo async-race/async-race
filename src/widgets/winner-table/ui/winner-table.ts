@@ -49,7 +49,11 @@ export function winnerTable({
   headerRow.append(
     BlockComponent({ tagName: 'div', textContent: 'Number' }),
     BlockComponent({ tagName: 'div', textContent: 'Car' }),
-    BlockComponent({ tagName: 'div', textContent: 'Name' }),
+    BlockComponent({
+      tagName: 'div',
+      textContent: 'Name',
+      extraClasses: 'truncate max-w-[150px]',
+    }),
     winsHeader,
     timeHeader,
   );
@@ -70,7 +74,7 @@ export function winnerTable({
       carSvg({ color: winner.color, size: 35 }),
       BlockComponent({ tagName: 'div', textContent: winner.name }),
       BlockComponent({ tagName: 'div', textContent: String(winner.wins) }),
-      BlockComponent({ tagName: 'div', textContent: String(winner.time) }),
+      BlockComponent({ tagName: 'div', textContent: winner.time.toFixed(2) }),
     );
 
     container.append(row);
