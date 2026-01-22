@@ -17,9 +17,11 @@ export function createGaragePage() {
   });
 
   const raceControlsButtons = raceControls({
-    onGenerate: async () => {
-      await generateCars();
-      await initCars();
+    onGenerate: () => {
+      void (async () => {
+        await generateCars();
+        await initCars();
+      })();
     },
     onReset: () => {
       console.log('Reset race');
