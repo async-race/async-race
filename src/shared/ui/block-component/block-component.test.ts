@@ -1,5 +1,5 @@
 import { BlockComponent } from './block-component';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('BlockComponent', () => {
   it('creates an instance of BlockComponent with given tag', () => {
@@ -27,5 +27,18 @@ describe('BlockComponent', () => {
     });
 
     expect(element.textContent).toBe('async-race');
+  });
+
+  it('calls onClick handler when clicked', () => {
+    const handleClick = vi.fn();
+    const element = BlockComponent({
+      tagName: 'button',
+      textContent: 'Click me',
+      onClick: handleClick,
+    });
+
+    element.click();
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

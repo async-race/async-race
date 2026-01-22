@@ -1,10 +1,14 @@
-import type { Car } from '@/entities/car/model/types';
-
-export function carSvg({ color }: Pick<Car, 'color'>): SVGSVGElement {
+export function carSvg({
+  color,
+  size = 50,
+}: {
+  color: string;
+  size?: number;
+}): SVGSVGElement {
   const car = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   car.setAttribute('fill', color);
-  car.setAttribute('width', '50');
-  car.setAttribute('height', '50px');
+  car.setAttribute('width', String(size));
+  car.setAttribute('height', String(size));
   car.setAttribute('viewBox', '0 -64 640 640');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute(

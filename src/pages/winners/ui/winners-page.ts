@@ -1,38 +1,84 @@
+import { winnersStore, winnersQueryStore, WINNERS_ON_PAGE } from '@/entities';
 import { BlockComponent } from '@/shared/ui/block-component/block-component';
 import { createPagination } from '@/widgets/pagination/ui/pagination';
-
-const WINNERS_ON_PAGE = 7;
+import { winnerTable } from '@/widgets/winner-table/ui/winner-table';
+import { initWinners } from '@/pages/model/init';
+import { getWinnersWithCars } from '@/features/get-winners-with-cars/get-winners-with-cars';
+import type { WinnersWithCars } from '@/pages/model/types';
 
 export function createWinnersPage() {
-  const page = BlockComponent({
+  const winnerPage = BlockComponent({
     tagName: 'div',
     extraClasses: 'flex flex-col',
-    textContent: 'Winners',
   });
 
-  let currentPage = 1;
-
-  const onPageChange = (page: number) => {
-    currentPage = page;
-    pagination.update();
-  };
-
-  const pagination = createPagination({
-    getPage: () => currentPage,
-    total: 100,
-    pageSize: WINNERS_ON_PAGE,
-    onChange: onPageChange,
+  const indexPage = BlockComponent({
+    tagName: 'h4',
+    textContent: `Page # ${String(winnersQueryStore.get().page)}`,
   });
 
-  page.append(pagination.element);
+  const tableElement = BlockComponent({ tagName: 'div' });
+
+  void initWinners();
+  const pagination = initPagination();
+
+  winnerPage.append(indexPage, tableElement, pagination.element);
+
+  function renderTable(winnersWithCars: WinnersWithCars[]): HTMLElement {
+    const { sort, order, page } = winnersQueryStore.get();
+    return winnerTable({
+      winners: winnersWithCars,
+      page: page,
+      pageSize: WINNERS_ON_PAGE,
+      sort: sort === 'id' ? '' : sort,
+      order,
+      onSortChange: (field, newOrder) => {
+        winnersQueryStore.set({ sort: field, order: newOrder });
+      },
+    });
+  }
+
+  function initPagination() {
+    const onPageChange = (page: number) => {
+      winnersQueryStore.set({ page });
+      indexPage.textContent = `Page # ${String(page)}`;
+      paginationElement.update();
+    };
+
+    const paginationElement = createPagination({
+      getPage: () => {
+        const { page } = winnersQueryStore.get();
+        return page;
+      },
+      getTotal: () => {
+        const { total } = winnersStore.get();
+        return total;
+      },
+      pageSize: WINNERS_ON_PAGE,
+      onChange: onPageChange,
+    });
+
+    return paginationElement;
+  }
+
+  winnersStore.subscribe(() => {
+    void (async () => {
+      const winnersWithCars = await getWinnersWithCars(
+        winnersStore.get().winners,
+      );
+      const newTable = renderTable(winnersWithCars);
+      tableElement.innerHTML = '';
+      tableElement.append(newTable);
+    })();
+  });
 
   return {
-    element: page,
+    element: winnerPage,
     show() {
-      page.classList.remove('hidden');
+      winnerPage.classList.remove('hidden');
     },
     hide() {
-      page.classList.add('hidden');
+      winnerPage.classList.add('hidden');
     },
   };
 }
