@@ -18,7 +18,7 @@ export async function generateCars(count = 100): Promise<Car[]> {
 
       carsRandomCollection.push(data);
     } catch (error) {
-      throw new Error('Generation of cars is failed!');
+      throw new Error('Generation of cars is failed!', { cause: error });
     }
   }
 
