@@ -5,9 +5,9 @@ import { randomCar } from './model/types';
 import { createCar } from '@/entities/car/api/car.api';
 import { carsStore } from '@/entities';
 
-export async function generateCars(): Promise<Car[]> {
+export async function generateCars(count = 100): Promise<Car[]> {
   const carsRandomCollection: Car[] = [];
-  for (let index = 0; index < 100; index += 1) {
+  for (let index = 0; index < count; index += 1) {
     const carIndex = getRandomInt(0, randomCar.length - 1);
     const color = getRandomColor();
     try {
