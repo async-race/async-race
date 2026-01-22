@@ -3,10 +3,10 @@ import { getRandomInt } from './lib/random-number/random-number';
 import type { Car } from '@/entities';
 import { randomCar } from './model/types';
 import { createCar } from '@/entities/car/api/car.api';
-import { carsStore } from '@/entities';
 
 export async function generateCars(count = 100): Promise<Car[]> {
   const carsRandomCollection: Car[] = [];
+
   for (let index = 0; index < count; index += 1) {
     const carIndex = getRandomInt(0, randomCar.length - 1);
     const color = getRandomColor();
@@ -18,11 +18,9 @@ export async function generateCars(count = 100): Promise<Car[]> {
 
       carsRandomCollection.push(data);
     } catch (error) {
-      console.log(error);
+      throw new Error('Generation of cars is failed!');
     }
   }
-
-  carsStore.set(carsRandomCollection, carsRandomCollection.length);
 
   return carsRandomCollection;
 }
