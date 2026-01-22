@@ -16,6 +16,6 @@ export type UpdateWinnerDto = {
 export type WinnersQuery = {
   page?: number;
   limit?: number;
-  sort?: 'id' | 'wins' | 'time';
+  sort?: 'id' | 'wins' | 'time' | '';
   order?: 'ASC' | 'DESC';
 };
