@@ -1,7 +1,12 @@
 import { BlockComponent } from '@/shared';
 import { Button } from '@/shared';
+import type { RaceControlProps } from '../model/types';
 
-export function raceControls(): HTMLElement {
+export function raceControls({
+  onGenerate,
+  onReset,
+  onStartRace,
+}: RaceControlProps): HTMLElement {
   const controlsContainer = BlockComponent({
     tagName: 'div',
     extraClasses: 'flex gap-2',
@@ -9,25 +14,25 @@ export function raceControls(): HTMLElement {
 
   const buttonStartRace = Button({
     textContent: 'race',
-    extraClasses: 'min-w-[100px]',
-    onClick() {
-      console.log('race starts');
+    extraClasses: 'min-w-[110px]',
+    onClick: () => {
+      onStartRace();
     },
   });
 
   const buttonResetRace = Button({
     textContent: 'reset',
-    extraClasses: 'min-w-[100px]',
-    onClick() {
-      console.log('race stops');
+    extraClasses: 'min-w-[110px]',
+    onClick: () => {
+      onReset();
     },
   });
 
   const buttonGenerateCars = Button({
-    textContent: 'generate',
-    extraClasses: 'min-w-[100px]',
-    onClick() {
-      console.log('100 cars');
+    textContent: 'generate cars',
+    extraClasses: 'min-w-[110px]',
+    onClick: () => {
+      onGenerate();
     },
   });
 

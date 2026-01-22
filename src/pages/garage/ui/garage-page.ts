@@ -3,6 +3,7 @@ import { cars as carsAPI } from '@/features';
 import { BlockComponent } from '@/shared';
 import { carList, createPagination, carPanel, raceControls } from '@/widgets';
 import { initCars } from '../model/init';
+import { generateCars } from '@/features/generate-cars/generate-cars';
 
 export function createGaragePage() {
   let selectedCarId: number | null = null;
@@ -15,7 +16,17 @@ export function createGaragePage() {
     extraClasses: 'flex flex-col items-center ml-[20px]',
   });
 
-  const raceControlsButtons = raceControls();
+  const raceControlsButtons = raceControls({
+    onGenerate: async () => {
+      await generateCars();
+    },
+    onReset: () => {
+      console.log('Reset race');
+    },
+    onStartRace: () => {
+      console.log('Start race');
+    },
+  });
 
   controlsTotalBlock.append(controls.element, raceControlsButtons);
 
