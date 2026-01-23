@@ -10,23 +10,24 @@ export function carList(
 ) {
   const widgetContainer = BlockComponent({
     tagName: 'div',
-    extraClasses: 'car-list',
+    extraClasses: 'car-list flex flex-col gap-2 p-0',
   });
   const totalLabel = BlockComponent({
     tagName: 'h4',
     textContent: `Garage (${total.toString()})`,
-    extraClasses: 'text-center',
+    extraClasses: 'text-center p-0',
   });
   widgetContainer.append(totalLabel);
   const items = new Map<string, HTMLElement>();
   cars.forEach((car) => {
     const carContainer = BlockComponent({
-      tagName: 'div',
+      tagName: 'p',
       extraClasses: 'flex items-center my-0',
     });
     const roadContainer = BlockComponent({
-      tagName: 'div',
-      extraClasses: 'flex flex-1 flex-col border-b-4',
+      tagName: 'p',
+      extraClasses:
+        'flex flex-1 flex-col justify-start border-b-4 border-dashed p-0',
     });
 
     const controls = createCarControls({
@@ -50,8 +51,7 @@ export function carList(
       textContent: car.name,
       extraClasses: 'font-bold',
     });
-    const newCar = carSvg(car);
-    newCar.classList.add('mt-auto');
+    const newCar = carSvg({ color: car.color, size: 45 });
     roadContainer.append(label, newCar);
     carContainer.append(controls, roadContainer);
     widgetContainer.append(carContainer);
