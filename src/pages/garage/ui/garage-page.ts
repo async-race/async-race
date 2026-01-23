@@ -1,8 +1,9 @@
 import { carsQueryStore, carsStore, CARS_ON_PAGE } from '@/entities';
 import { cars as carsAPI } from '@/features';
 import { BlockComponent } from '@/shared';
-import { carList, createPagination, carPanel } from '@/widgets';
+import { carList, createPagination, carPanel, raceControls } from '@/widgets';
 import { initCars } from '../model/init';
+import { generateCars } from '@/features/generate-cars/generate-cars';
 
 export function createGaragePage() {
   let selectedCarId: number | null = null;
@@ -10,6 +11,27 @@ export function createGaragePage() {
   void initCars();
   const pagination = initPagination();
   const controls = initControls(() => selectedCarId);
+  const controlsTotalBlock = BlockComponent({
+    tagName: 'div',
+    extraClasses: 'flex flex-col items-center ml-[20px]',
+  });
+
+  const raceControlsButtons = raceControls({
+    onGenerate: () => {
+      void (async () => {
+        await generateCars();
+        await initCars();
+      })();
+    },
+    onReset: () => {
+      console.log('Reset race');
+    },
+    onStartRace: () => {
+      console.log('Start race');
+    },
+  });
+
+  controlsTotalBlock.append(controls.element, raceControlsButtons);
 
   const pageContainer = BlockComponent({
     tagName: 'div',
@@ -21,7 +43,7 @@ export function createGaragePage() {
     extraClasses: 'flex flex-col',
   });
 
-  pageContainer.append(controls.element, tableContainer, pagination.element);
+  pageContainer.append(controlsTotalBlock, tableContainer, pagination.element);
 
   function render() {
     const { cars, total } = carsStore.get();
@@ -103,7 +125,6 @@ const initControls = (getSelectedId: () => number | null) => {
   });
 
   carUpdateControls.setDisabled(true);
-
   controlsContainer.append(carAddControls.element, carUpdateControls.element);
 
   return {
