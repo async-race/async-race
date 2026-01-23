@@ -1,12 +1,14 @@
 import { carsQueryStore, carsStore, CARS_ON_PAGE } from '@/entities';
-import { cars as carsAPI } from '@/features';
+import { cars as carsAPI, race as raceApi } from '@/features';
 import { BlockComponent } from '@/shared';
 import { carList, createPagination, carPanel, raceControls } from '@/widgets';
 import { initCars } from '../model/init';
-import { generateCars } from '@/features/generate-cars/generate-cars';
+import { animateCarMovement } from '../model/animation';
+import type { CarItem } from '../model/types';
 
 export function createGaragePage() {
   let selectedCarId: number | null = null;
+  let carItems: Map<string, CarItem> = new Map();
 
   void initCars();
   const pagination = initPagination();
@@ -16,18 +18,53 @@ export function createGaragePage() {
     extraClasses: 'flex flex-col items-center ml-[20px]',
   });
 
-  const raceControlsButtons = raceControls({
+  const { element: raceControlsButtons, setDisabled } = raceControls({
     onGenerate: () => {
       void (async () => {
-        await generateCars();
+        await carsAPI.generateCars();
         await initCars();
       })();
     },
     onReset: () => {
-      console.log('Reset race');
+      controls.setAddDisabled(false);
+      setDisabled(false);
+      carItems.forEach((item) => {
+        item.stopAnimation?.();
+        item.car.style.transform = 'translateX(0)';
+        item.buttons.startButton.disabled = false;
+        item.buttons.stopButton.disabled = true;
+        item.buttons.deleteButton.disabled = false;
+        item.buttons.selectButton.disabled = false;
+      });
     },
     onStartRace: () => {
-      console.log('Start race');
+      controls.setAddDisabled(true);
+      controls.setEditDisabled(true);
+      setDisabled(true);
+      const { cars } = carsStore.get();
+
+      const raceCars = cars.map((car) => {
+        const carItem = carItems.get(car.id.toString());
+        if (!carItem) throw new Error('Car not found');
+
+        return {
+          id: car.id,
+          animate: (velocity: number, distance: number) => {
+            setAllControls(carItem.buttons, true);
+            const animation = animateCarMovement(
+              velocity,
+              distance,
+              carItem.car,
+            );
+            carItem.stopAnimation = animation.stop;
+            return animation;
+          },
+        };
+      });
+
+      void raceApi.startRaceForAllCars(raceCars, () => {
+        setDisabled(false);
+      });
     },
   });
 
@@ -47,26 +84,47 @@ export function createGaragePage() {
 
   function render() {
     const { cars, total } = carsStore.get();
-    const carListElement = carList(cars, total, {
+    const { widgetContainer: carListElement, items } = carList(cars, total, {
       onEdit: (id, dto) => {
         selectedCarId = id;
-        controls.setDisabled(false);
+        controls.setEditDisabled(false);
         controls.setEditValues(dto);
       },
       onDelete: (id) => {
         void carsAPI.deleteCar(id);
         if (selectedCarId === id) {
-          controls.setDisabled(true);
+          controls.setEditDisabled(true);
           selectedCarId = null;
         }
       },
       onStart: (id) => {
-        console.log('Start', id);
+        const carItem = carItems.get(id.toString());
+        if (!carItem) throw new Error('Car not found');
+        raceApi
+          .startRaceForCar(id, (velocity, distance) => {
+            setControlsDisble(carItem.buttons);
+            const animation = animateCarMovement(
+              velocity,
+              distance,
+              carItem.car,
+            );
+            carItem.stopAnimation = animation.stop;
+            return animation;
+          })
+          .catch((error: unknown) => {
+            console.log(error);
+          });
       },
       onStop: (id) => {
-        console.log('Stop', id);
+        void raceApi.stopRaceForCar(id);
+        const carItem = carItems.get(id.toString());
+        if (!carItem) throw new Error('Car not found');
+        setControlsEnable(carItem.buttons);
+        carItem.stopAnimation?.();
+        carItem.car.style.transform = 'translateX(0)';
       },
     });
+    carItems = items;
     tableContainer.replaceChildren(carListElement);
     pagination.update();
   }
@@ -130,6 +188,27 @@ const initControls = (getSelectedId: () => number | null) => {
   return {
     element: controlsContainer,
     setEditValues: carUpdateControls.setValues,
-    setDisabled: carUpdateControls.setDisabled,
+    setEditDisabled: carUpdateControls.setDisabled,
+    setAddDisabled: carAddControls.setDisabled,
   };
+};
+
+const setControlsDisble = (buttons: CarItem['buttons']) => {
+  buttons.deleteButton.disabled = true;
+  buttons.selectButton.disabled = true;
+  buttons.startButton.disabled = true;
+  buttons.stopButton.disabled = false;
+};
+
+const setControlsEnable = (buttons: CarItem['buttons']) => {
+  buttons.deleteButton.disabled = false;
+  buttons.selectButton.disabled = false;
+  buttons.startButton.disabled = false;
+  buttons.stopButton.disabled = true;
+};
+
+const setAllControls = (buttons: CarItem['buttons'], isDisabled: boolean) => {
+  Object.values(buttons).forEach((button) => {
+    button.disabled = isDisabled;
+  });
 };

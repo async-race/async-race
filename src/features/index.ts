@@ -2,10 +2,15 @@ import { createCar } from './car/create/model/create';
 import { loadCars } from './car/load/model/load';
 import { updateCar } from './car/update/model/update';
 import { deleteCar } from './car/delete/model/delete';
+import { generateCars } from './generate-cars/generate-cars';
 
 import { loadWinners } from './winners/load/model/load';
 import { updateWinners } from './winners/update/model/update';
 import { deleteWinners } from './winners/delete/model/delete';
 
-export const cars = { createCar, loadCars, updateCar, deleteCar };
+import { startRaceForCar, stopRaceForCar } from './race/model/start-race';
+import { startRaceForAllCars } from './race/model/start-race-all';
+
+export const cars = { createCar, loadCars, updateCar, deleteCar, generateCars };
 export const winners = { loadWinners, updateWinners, deleteWinners };
+export const race = { startRaceForCar, startRaceForAllCars, stopRaceForCar };
