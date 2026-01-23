@@ -13,7 +13,7 @@ export function carList(
     extraClasses: 'car-list',
   });
   const totalLabel = BlockComponent({
-    tagName: 'p',
+    tagName: 'h4',
     textContent: `Garage (${total.toString()})`,
     extraClasses: 'text-center',
   });
@@ -22,7 +22,7 @@ export function carList(
   cars.forEach((car) => {
     const carContainer = BlockComponent({
       tagName: 'div',
-      extraClasses: 'flex',
+      extraClasses: 'flex items-center my-0',
     });
     const roadContainer = BlockComponent({
       tagName: 'div',
@@ -45,8 +45,13 @@ export function carList(
       },
     });
 
-    const label = BlockComponent({ tagName: 'p', textContent: car.name });
+    const label = BlockComponent({
+      tagName: 'p',
+      textContent: car.name,
+      extraClasses: 'font-bold',
+    });
     const newCar = carSvg(car);
+    newCar.classList.add('mt-auto');
     roadContainer.append(label, newCar);
     carContainer.append(controls, roadContainer);
     widgetContainer.append(carContainer);

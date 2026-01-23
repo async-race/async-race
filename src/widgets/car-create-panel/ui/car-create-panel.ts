@@ -7,12 +7,13 @@ const createInputs = () => ({
   carName: Input({
     id: 'car-model',
     name: 'car-model',
+    extraClasses: 'h-8 p-2',
   }),
   carColor: Input({
     type: 'color',
     id: 'car-color',
     name: 'car-color',
-    extraClasses: 'w-15 h-12',
+    extraClasses: 'w-10 h-8 p-0 appearance-none',
   }),
 });
 
@@ -27,6 +28,7 @@ export function carPanel(
   const input = createInputs();
   const button = Button({
     textContent: type.toUpperCase(),
+    extraClasses: 'h-8 px-3 bg-sky-400 hover:bg-sky-700',
     onClick() {
       onSubmit({ name: input.carName.value, color: input.carColor.value });
       resetValues();

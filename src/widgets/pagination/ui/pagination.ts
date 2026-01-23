@@ -42,7 +42,7 @@ export function createPagination({
   const currentPage = Button({
     textContent: '1',
     disabled: true,
-    extraClasses: className,
+    extraClasses: `${className} bg-blue-500 text-white`,
   });
 
   container.append(previousButton, currentPage, nextButton);

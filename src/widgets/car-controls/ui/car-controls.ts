@@ -9,13 +9,29 @@ export function createCarControls({
 }: CarControlsProps) {
   const widgetContainer = BlockComponent({
     tagName: 'div',
-    extraClasses: 'grid grid-cols-2 gap-2 w-42',
+    extraClasses: 'grid grid-cols-2 gap-1 w-42',
   });
 
-  const selectButton = Button({ textContent: 'Edit', onClick: onEdit });
-  const deleteButton = Button({ textContent: 'Delete', onClick: onDelete });
-  const startButton = Button({ textContent: 'Start', onClick: onStart });
-  const stopButton = Button({ textContent: 'Stop', onClick: onStop });
+  const selectButton = Button({
+    textContent: 'Edit',
+    extraClasses: 'h-8 px-3 p-1 bg-sky-400 hover:bg-sky-700',
+    onClick: onEdit,
+  });
+  const deleteButton = Button({
+    textContent: 'Delete',
+    extraClasses: 'h-8 px-3 p-1 bg-gray-700 hover:bg-black',
+    onClick: onDelete,
+  });
+  const startButton = Button({
+    textContent: 'Start',
+    extraClasses: 'h-8 px-3 p-1 bg-green-500 hover:bg-green-700',
+    onClick: onStart,
+  });
+  const stopButton = Button({
+    textContent: 'Stop',
+    extraClasses: 'h-8 px-3 p-1 bg-red-500 hover:bg-red-700',
+    onClick: onStop,
+  });
   widgetContainer.append(selectButton, startButton, deleteButton, stopButton);
   return widgetContainer;
 }
