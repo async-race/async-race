@@ -5,6 +5,8 @@ import { carList, createPagination, carPanel, raceControls } from '@/widgets';
 import { initCars } from '../model/init';
 import { animateCarMovement } from '../model/animation';
 import type { CarItem } from '../model/types';
+import { stoptRaceForAllCars } from '@/features/race/model/start-race-all';
+import { race } from '@/features';
 
 export function createGaragePage() {
   let selectedCarId: number | null = null;
@@ -18,7 +20,13 @@ export function createGaragePage() {
     extraClasses: 'flex flex-col items-center ml-[20px]',
   });
 
-  const { element: raceControlsButtons, setDisabled } = raceControls({
+  const {
+    element: raceControlsButtons,
+    setRaceButtonState,
+    setResetButtonState,
+    setResetLoading,
+    setGenerateButtonState,
+  } = raceControls({
     onGenerate: () => {
       void (async () => {
         await carsAPI.generateCars();
@@ -26,22 +34,39 @@ export function createGaragePage() {
       })();
     },
     onReset: () => {
-      controls.setAddDisabled(false);
-      setDisabled(false);
-      carItems.forEach((item) => {
-        item.stopAnimation?.();
-        item.car.style.transform = 'translateX(0)';
-        item.buttons.startButton.disabled = false;
-        item.buttons.stopButton.disabled = true;
-        item.buttons.deleteButton.disabled = false;
-        item.buttons.selectButton.disabled = false;
+      setResetLoading(true);
+      race.raceController.stop();
+
+      const { items: cars } = carsStore.get();
+      void stoptRaceForAllCars(cars, () => {
+        controls.setAddDisabled(false);
+        setResetLoading(false);
+        setResetButtonState(true);
+        setRaceButtonState(false);
+        setGenerateButtonState(false);
+        setGenerateButtonState(false);
+        carItems.forEach((item) => {
+          item.stopAnimation?.();
+          item.car.style.transform = 'translateX(0)';
+          item.buttons.startButton.disabled = false;
+          item.buttons.stopButton.disabled = true;
+          item.buttons.deleteButton.disabled = false;
+          item.buttons.selectButton.disabled = false;
+        });
       });
     },
     onStartRace: () => {
       controls.setAddDisabled(true);
       controls.setEditDisabled(true);
-      setDisabled(true);
+      setResetButtonState(true);
+      setRaceButtonState(true);
+      setGenerateButtonState(true);
       const { items: cars } = carsStore.get();
+      cars.map((car) => {
+        const carItem = carItems.get(car.id.toString());
+        if (!carItem) throw new Error('Car not found');
+        setAllControls(carItem.buttons, true);
+      });
 
       const raceCars = cars.map((car) => {
         const carItem = carItems.get(car.id.toString());
@@ -50,7 +75,6 @@ export function createGaragePage() {
         return {
           id: car.id,
           animate: (velocity: number, distance: number) => {
-            setAllControls(carItem.buttons, true);
             const animation = animateCarMovement(
               velocity,
               distance,
@@ -63,7 +87,7 @@ export function createGaragePage() {
       });
 
       void raceApi.startRaceForAllCars(raceCars, () => {
-        setDisabled(false);
+        setResetButtonState(false);
       });
     },
   });

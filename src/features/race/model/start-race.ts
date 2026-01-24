@@ -15,26 +15,36 @@ export async function startRaceForCar(
     stop: () => void;
     getTime: () => number;
   },
-  onDriveError?: (id: number) => void,
+  signal?: AbortSignal,
 ) {
-  try {
-    const {
-      data: { velocity, distance },
-    } = await engine.startEngine(id);
+  if (signal?.aborted) {
+    throw new DOMException('Aborted', 'AbortError');
+  }
 
+  const abortPromise = new Promise<never>((_, reject) => {
+    signal?.addEventListener('abort', () => {
+      reject(new DOMException('Aborted', 'AbortError'));
+    });
+  });
+
+  try {
+    const startResponse = await Promise.race([
+      engine.startEngine(id),
+      abortPromise,
+    ]);
+
+    const { velocity, distance } = startResponse.data;
     const animation = onAnimationStart(velocity, distance);
     animation.start();
 
-    try {
-      await engine.driveEngine(id);
-      const time = animation.getTime() / 1000;
-      return { carId: id, time };
-    } catch {
-      if (onDriveError) onDriveError(id);
-      animation.stop();
-      throw new Error('Race error');
+    await Promise.race([engine.driveEngine(id), abortPromise]);
+
+    const time = animation.getTime() / 1000;
+    return { carId: id, time };
+  } catch (error) {
+    if ((error as DOMException).name === 'AbortError') {
+      throw error;
     }
-  } catch {
     throw new Error('Race error');
   }
 }
