@@ -2,6 +2,7 @@ import type { Car } from '@/entities';
 import { BlockComponent, carSvg } from '@/shared';
 import { createCarControls } from '@/widgets';
 import type { CarListProps } from '../model/types';
+import { Image } from '@/shared/ui/image/image';
 
 export function carList(
   cars: Car[],
@@ -29,6 +30,11 @@ export function carList(
       extraClasses:
         'flex flex-1 flex-col justify-start border-b-4 border-dashed p-0',
     });
+    const raceFlag = Image({
+      source: '/src/assets/racing-flag.svg',
+      alt: 'racing-flag',
+      extraClasses: 'w-15 h-15',
+    });
 
     const controls = createCarControls({
       onEdit: () => {
@@ -53,7 +59,7 @@ export function carList(
     });
     const newCar = carSvg({ color: car.color, size: 45 });
     roadContainer.append(label, newCar);
-    carContainer.append(controls, roadContainer);
+    carContainer.append(controls, roadContainer, raceFlag);
     widgetContainer.append(carContainer);
     items.set(String(car.id), carContainer);
   });

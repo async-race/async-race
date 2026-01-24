@@ -10,6 +10,6 @@ export const baseClasses: Record<string, string> = {
   button:
     ' p-2 cursor-pointer text-base sm:text-lg md:text-xl text-white rounded-md transition-colors duration-300 flex items-center justify-center disabled:bg-gray-400 disabled:cursor-default',
   a: 'bg-sky-400 hover:bg-sky-700 p-2 w-18 sm:w-28 md:w-34 text-base sm:text-lg md:text-xl text-white rounded-2xl transition-colors duration-300 flex items-center justify-center no-underline',
-  img: 'max-w-full h-auto object-cover',
+  img: '',
   span: 'text-black',
 };
