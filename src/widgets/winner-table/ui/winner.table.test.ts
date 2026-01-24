@@ -3,13 +3,13 @@ import { winnerTable } from './winner-table';
 import type { WinnersWithCars } from '@/features';
 
 const mockWinners: WinnersWithCars[] = [
-  { id: 1, name: 'Alice', color: 'red', wins: 3, time: 12.5 },
-  { id: 2, name: 'Bob', color: 'blue', wins: 5, time: 10.2 },
+  { id: 1, name: 'BMW', color: '#000000', wins: 3, time: 12.5 },
+  { id: 2, name: 'Tesla', color: '#ff0000', wins: 5, time: 10.2 },
 ];
 
 describe('winnerTable', () => {
   it('renders table headers', () => {
-    const table = winnerTable({
+    const tableElement = winnerTable({
       winners: mockWinners,
       page: 1,
       pageSize: 10,
@@ -18,15 +18,26 @@ describe('winnerTable', () => {
       onSortChange: vi.fn(),
     });
 
-    const headers = table.querySelectorAll('.grid.grid-cols-5 > div');
-    const texts = [...headers].map((h) => h.textContent);
+    const headerRowElement = [
+      ...tableElement.querySelectorAll('.grid.font-bold'),
+    ].find((element) =>
+      element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]'),
+    );
 
-    expect(texts.some((t) => t && t.includes('Wins'))).toBe(true);
-    expect(texts.some((t) => t && t.includes('Best time'))).toBe(true);
+    expect(headerRowElement).toBeTruthy();
+    if (!headerRowElement) throw new Error('headerRowElement is null');
+
+    const headerCells = headerRowElement.querySelectorAll(':scope > div');
+    const headerTexts = [...headerCells].map((cell) =>
+      (cell.textContent || '').trim(),
+    );
+
+    expect(headerTexts.some((text) => text.includes('Wins'))).toBe(true);
+    expect(headerTexts.some((text) => text.includes('Best time'))).toBe(true);
   });
 
   it('renders rows with correct numbering', () => {
-    const table = winnerTable({
+    const tableElement = winnerTable({
       winners: mockWinners,
       page: 2,
       pageSize: 10,
@@ -35,18 +46,22 @@ describe('winnerTable', () => {
       onSortChange: vi.fn(),
     });
 
-    const rows = table.querySelectorAll('.grid.grid-cols-5');
-    const dataRows = [...rows].slice(1);
+    const rowElements = [...tableElement.querySelectorAll('.grid')].filter(
+      (element) =>
+        element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]'),
+    );
 
-    expect(dataRows[0].textContent).toContain('11');
-    expect(dataRows[0].textContent).toContain('Alice');
-    expect(dataRows[1].textContent).toContain('12');
-    expect(dataRows[1].textContent).toContain('Bob');
+    const dataRowElements = rowElements.slice(1);
+
+    expect(dataRowElements[0].textContent).toContain('11');
+    expect(dataRowElements[0].textContent).toContain('BMW');
+    expect(dataRowElements[1].textContent).toContain('12');
+    expect(dataRowElements[1].textContent).toContain('Tesla');
   });
 
   it('calls onSortChange when clicking header', () => {
     const onSortChange = vi.fn();
-    const table = winnerTable({
+    const tableElement = winnerTable({
       winners: mockWinners,
       page: 1,
       pageSize: 10,
@@ -55,16 +70,19 @@ describe('winnerTable', () => {
       onSortChange,
     });
 
-    const winsHeader = [
-      ...table.querySelectorAll('.grid.grid-cols-5 > div'),
-    ].find(
-      (element) => element.textContent && element.textContent.includes('Wins'),
+    const headerRowElement = [...tableElement.querySelectorAll('.grid')].find(
+      (element) =>
+        element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]'),
     );
+    if (!headerRowElement) throw new Error('headerRowElement is null');
 
-    if (!winsHeader) {
-      throw new Error('winsHeader is null');
-    }
-    winsHeader.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    const winsHeaderElement = [
+      ...headerRowElement.querySelectorAll('.cursor-pointer'),
+    ].find((element) => (element.textContent || '').includes('Wins'));
+
+    if (!winsHeaderElement) throw new Error('winsHeaderElement is null');
+
+    winsHeaderElement.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
     expect(onSortChange).toHaveBeenCalledWith('wins', 'DESC');
   });

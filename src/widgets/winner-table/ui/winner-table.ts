@@ -25,9 +25,16 @@ export function winnerTable({
     extraClasses: 'flex flex-col',
   });
 
+  const totalLabel = BlockComponent({
+    tagName: 'h4',
+    textContent: `Winners (${winners.length.toString()})`,
+    extraClasses: 'text-center p-0',
+  });
+
   const headerRow = BlockComponent({
     tagName: 'div',
-    extraClasses: 'grid grid-cols-5 font-bold bg-gray-200 py-1 px-2',
+    extraClasses:
+      'grid grid-cols-[1fr_1fr_1fr_1fr_1fr] font-bold bg-gray-200 p-0',
   });
 
   const winsHeader = winnerTableHeader({
@@ -39,7 +46,7 @@ export function winnerTable({
   });
 
   const timeHeader = winnerTableHeader({
-    text: 'Best time (s)',
+    text: 'Best time',
     headerField: 'time',
     sort,
     order,
@@ -47,34 +54,74 @@ export function winnerTable({
   });
 
   headerRow.append(
-    BlockComponent({ tagName: 'div', textContent: 'Number' }),
-    BlockComponent({ tagName: 'div', textContent: 'Car' }),
     BlockComponent({
       tagName: 'div',
-      textContent: 'Name',
-      extraClasses: 'truncate max-w-[150px]',
+      extraClasses: 'grid place-items-center',
+      textContent: 'Number',
     }),
-    winsHeader,
-    timeHeader,
+    BlockComponent({
+      tagName: 'div',
+      extraClasses: 'grid place-items-center',
+      textContent: 'Car',
+    }),
+    BlockComponent({
+      tagName: 'div',
+      extraClasses: 'grid place-items-center',
+      textContent: 'Name',
+    }),
+    BlockComponent({
+      tagName: 'div',
+      extraClasses: 'grid place-items-center',
+      children: [winsHeader],
+    }),
+    BlockComponent({
+      tagName: 'div',
+      extraClasses: 'grid place-items-center',
+      children: [timeHeader],
+    }),
   );
-  container.append(headerRow);
+  container.append(totalLabel, headerRow);
 
   const start = (page - 1) * pageSize;
   winners.forEach((winner, index) => {
     const row = BlockComponent({
       tagName: 'div',
-      extraClasses: 'grid grid-cols-5',
+      extraClasses: 'grid grid-cols-[1fr_1fr_1fr_1fr_1fr] px-2',
     });
 
     row.append(
       BlockComponent({
         tagName: 'div',
+        extraClasses: 'grid place-items-center',
         textContent: String(start + index + 1),
       }),
-      carSvg({ color: winner.color, size: 35 }),
-      BlockComponent({ tagName: 'div', textContent: winner.name }),
-      BlockComponent({ tagName: 'div', textContent: String(winner.wins) }),
-      BlockComponent({ tagName: 'div', textContent: winner.time.toFixed(2) }),
+      BlockComponent({
+        tagName: 'div',
+        extraClasses: 'grid place-items-center',
+        children: [
+          (() => {
+            const svg = carSvg({ color: winner.color, size: 35 });
+            svg.classList.add('block');
+            return svg;
+          })(),
+        ],
+      }),
+      BlockComponent({
+        tagName: 'div',
+        extraClasses:
+          'grid place-items-center truncate overflow-hidden min-w-[50px]',
+        textContent: winner.name,
+      }),
+      BlockComponent({
+        tagName: 'div',
+        extraClasses: 'grid place-items-center',
+        textContent: String(winner.wins),
+      }),
+      BlockComponent({
+        tagName: 'div',
+        extraClasses: 'grid place-items-center',
+        textContent: winner.time.toFixed(2),
+      }),
     );
 
     container.append(row);

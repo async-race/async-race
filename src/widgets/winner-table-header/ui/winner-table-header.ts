@@ -2,7 +2,7 @@ import { BlockComponent } from '@/shared';
 import type { WinnerTableProps } from '@/widgets/winner-table/ui/winner-table';
 
 type HeaderProps = {
-  text: 'Wins' | 'Best time (s)';
+  text: 'Wins' | 'Best time';
   headerField: 'wins' | 'time';
 };
 
@@ -20,7 +20,8 @@ export function winnerTableHeader({
 
   const header = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex items-center gap-3 cursor-pointer select-none',
+    extraClasses:
+      'flex items-center justify-center gap-2 cursor-pointer select-none',
     onClick: () => {
       if (!isActive) {
         onSortChange(headerField, 'ASC');
@@ -36,9 +37,7 @@ export function winnerTableHeader({
   const arrowUp = BlockComponent({
     tagName: 'span',
     textContent: '▲',
-    extraClasses: `text-xs transition-opacity ${
-      isActive && order === 'ASC' ? 'opacity-100' : 'opacity-30'
-    }`,
+    extraClasses: `text-xs transition-opacity ${isActive && order === 'ASC' ? 'opacity-100' : 'opacity-30'}`,
     onClick: (event: Event) => {
       event.stopPropagation();
       onSortChange(headerField, 'ASC');
@@ -48,9 +47,7 @@ export function winnerTableHeader({
   const arrowDown = BlockComponent({
     tagName: 'span',
     textContent: '▼',
-    extraClasses: `text-xs transition-opacity ${
-      isActive && order === 'DESC' ? 'opacity-100' : 'opacity-30'
-    }`,
+    extraClasses: `text-xs transition-opacity ${isActive && order === 'DESC' ? 'opacity-100' : 'opacity-30'}`,
     onClick: (event: Event) => {
       event.stopPropagation();
       onSortChange(headerField, 'DESC');

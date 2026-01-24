@@ -14,7 +14,8 @@ export function raceControls({
 
   const buttonStartRace = Button({
     textContent: 'race',
-    extraClasses: 'min-w-[110px]',
+    extraClasses:
+      'h-8 px-3 bg-green-500 hover:bg-green-700 text-white text-sm flex items-center',
     onClick: () => {
       onStartRace();
     },
@@ -22,7 +23,8 @@ export function raceControls({
 
   const buttonResetRace = Button({
     textContent: 'reset',
-    extraClasses: 'min-w-[110px]',
+    extraClasses:
+      'h-8 px-3 bg-red-500 hover:bg-red-700 text-white text-sm flex items-center',
     onClick: () => {
       onReset();
     },
@@ -30,7 +32,8 @@ export function raceControls({
 
   const buttonGenerateCars = Button({
     textContent: 'generate cars',
-    extraClasses: 'min-w-[110px]',
+    extraClasses:
+      'h-8 px-3 bg-sky-400 hover:bg-sky-700 text-white text-sm flex items-center',
     onClick: () => {
       onGenerate();
     },

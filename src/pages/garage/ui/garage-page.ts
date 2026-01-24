@@ -18,7 +18,7 @@ export function createGaragePage() {
 
   const controlsContainer = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex flex-col items-center ml-[20px]',
+    extraClasses: 'flex flex-col items-center ml-[20px] pt-0 pb-0',
   });
 
   const raceControls = initGarageRaceControls(() => carItems);
@@ -27,7 +27,7 @@ export function createGaragePage() {
 
   const pageContainer = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex flex-col w-full max-w-5xl',
+    extraClasses: 'flex flex-col w-full max-w-5xl pt-0',
   });
 
   const tableContainer = BlockComponent({

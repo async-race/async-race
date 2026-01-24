@@ -15,7 +15,8 @@ export function createPagination({
 
   const container = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex gap-4 justify-center',
+    extraClasses:
+      'fixed bottom-10 left-0 w-full flex gap-4 justify-center pt-4',
   });
 
   const className = 'min-w-10';
@@ -26,7 +27,7 @@ export function createPagination({
       const page = getPage();
       if (page > 1) onChange(page - 1);
     },
-    extraClasses: className,
+    extraClasses: `${className} bg-sky-400 hover:bg-sky-700 text-white h-9 px-3`,
   });
 
   const nextButton = Button({
@@ -36,13 +37,13 @@ export function createPagination({
       const totalPages = calculateTotalPages();
       if (page < totalPages) onChange(page + 1);
     },
-    extraClasses: className,
+    extraClasses: `${className} bg-sky-400 hover:bg-sky-700 text-white h-9 px-3`,
   });
 
   const currentPage = Button({
     textContent: '1',
     disabled: true,
-    extraClasses: className,
+    extraClasses: `${className} h-9 px-3`,
   });
 
   container.append(previousButton, currentPage, nextButton);

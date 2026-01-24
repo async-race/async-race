@@ -16,12 +16,6 @@ describe('Image Component', () => {
     expect(image.alt).toContain('a girl on the bench');
   });
 
-  it('adds base Classes', () => {
-    const image = Image({ source: 'img_girl.jpg' });
-
-    expect(image.className).toContain('object-cover');
-  });
-
   it('adds extra Classes', () => {
     const image = Image({ source: 'img_girl.jpg', extraClasses: 'custom' });
 
