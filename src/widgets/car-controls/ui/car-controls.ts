@@ -15,7 +15,14 @@ export function createCarControls({
   const selectButton = Button({ textContent: 'Edit', onClick: onEdit });
   const deleteButton = Button({ textContent: 'Delete', onClick: onDelete });
   const startButton = Button({ textContent: 'Start', onClick: onStart });
-  const stopButton = Button({ textContent: 'Stop', onClick: onStop });
+  const stopButton = Button({
+    textContent: 'Stop',
+    onClick: onStop,
+    disabled: true,
+  });
   widgetContainer.append(selectButton, startButton, deleteButton, stopButton);
-  return widgetContainer;
+  return {
+    widgetContainer,
+    buttons: { selectButton, deleteButton, startButton, stopButton },
+  };
 }

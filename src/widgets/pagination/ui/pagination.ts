@@ -57,10 +57,16 @@ export function createPagination({
     currentPage.textContent = page.toString();
   }
 
+  function disable() {
+    previousButton.disabled = true;
+    nextButton.disabled = true;
+  }
+
   update();
 
   return {
     element: container,
     update,
+    disable,
   };
 }

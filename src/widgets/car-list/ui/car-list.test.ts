@@ -22,7 +22,7 @@ describe('carList', () => {
       { id: 2, name: 'Audi', color: '#fff000' },
     ];
 
-    const element = carList(cars, 2, {
+    const { widgetContainer: element } = carList(cars, 2, {
       onEdit: vi.fn(),
       onDelete: vi.fn(),
       onStart: vi.fn(),
@@ -39,7 +39,7 @@ describe('carList', () => {
   it('should render one car container per car', () => {
     const cars: Car[] = [{ id: 42, name: 'Tesla', color: '#ff0000' }];
 
-    const element = carList(cars, 1, {
+    const { widgetContainer: element } = carList(cars, 1, {
       onEdit: vi.fn(),
       onDelete: vi.fn(),
       onStart: vi.fn(),

@@ -19,7 +19,6 @@ export function generateCars(count = 100) {
   return Promise.all(randomCarsRequest)
     .then((responses) => {
       const cars = responses.map((data) => data.data);
-      console.log(cars);
       return cars;
     })
     .catch(() => {

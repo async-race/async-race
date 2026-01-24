@@ -10,7 +10,7 @@ describe('raceControls', () => {
       onStartRace: vi.fn(),
     };
 
-    const controlsContainer: HTMLElement = raceControls(raceControlProperties);
+    const { element: controlsContainer } = raceControls(raceControlProperties);
 
     expect(controlsContainer).toBeInstanceOf(HTMLElement);
     expect(controlsContainer.querySelectorAll('button')).toHaveLength(3);
@@ -30,7 +30,7 @@ describe('raceControls', () => {
       onStartRace: vi.fn(),
     };
 
-    const controlsContainer: HTMLElement = raceControls(raceControlProperties);
+    const { element: controlsContainer } = raceControls(raceControlProperties);
     const buttonStartRace: HTMLButtonElement | null =
       controlsContainer.querySelector('button:first-child');
 
@@ -47,7 +47,7 @@ describe('raceControls', () => {
       onStartRace: vi.fn(),
     };
 
-    const controlsContainer: HTMLElement = raceControls(raceControlProperties);
+    const { element: controlsContainer } = raceControls(raceControlProperties);
     const buttonResetRace: HTMLButtonElement | null =
       controlsContainer.querySelectorAll('button')[1];
 
@@ -64,7 +64,7 @@ describe('raceControls', () => {
       onStartRace: vi.fn(),
     };
 
-    const controlsContainer: HTMLElement = raceControls(raceControlProperties);
+    const { element: controlsContainer } = raceControls(raceControlProperties);
     const buttonGenerateCars: HTMLButtonElement | null =
       controlsContainer.querySelectorAll('button')[2];
 
