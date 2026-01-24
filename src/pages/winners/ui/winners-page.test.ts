@@ -1,13 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { createWinnersPage } from './winners-page';
-import type { WinnersWithCars } from '@/pages/model/types';
-import { winnersStore, winnersQueryStore } from '@/entities';
 import type { Mock } from 'vitest';
-import { getWinnersWithCars } from '@/features/get-winners-with-cars/get-winners-with-cars';
-import { createPagination } from '@/widgets';
+import { createWinnersPage } from './winners-page';
+import { winnersStore, winnersQueryStore } from '@/entities';
+import { winners, type WinnersWithCars } from '@/features';
+import { createPagination, winnerTableHeader } from '@/widgets';
 import type { PaginationProps } from '@/widgets/pagination/model/types';
-import { winnerTableHeader } from '@/widgets/winner-table-header/ui/winner-table-header';
-import { initWinners } from '@/pages/model/init';
+import { initWinners } from '../model/init';
 
 type PaginationInstance = {
   element: HTMLElement;
@@ -33,9 +31,11 @@ vi.mock('@/widgets/pagination/ui/pagination', () => ({
   })),
 }));
 
-vi.mock('@/pages/model/init', () => ({ initWinners: vi.fn() }));
-vi.mock('@/features/get-winners-with-cars/get-winners-with-cars', () => ({
-  getWinnersWithCars: vi.fn((items: WinnersWithCars[]) => items),
+vi.mock('../model/init', () => ({ initWinners: vi.fn() }));
+vi.mock('@/features', () => ({
+  winners: {
+    getWinnersWithCars: vi.fn((items: WinnersWithCars[]) => items),
+  },
 }));
 
 describe('createWinnersPage', () => {
@@ -129,7 +129,7 @@ describe('createWinnersPage', () => {
     const pageInstance = createWinnersPage();
     const oldTable = pageInstance.element.querySelector('.grid.grid-cols-5');
 
-    (getWinnersWithCars as Mock).mockResolvedValue([
+    (winners.getWinnersWithCars as Mock).mockResolvedValue([
       { id: 3, name: 'Carol', color: 'green', wins: 7, time: 9.8 },
     ]);
 
@@ -205,7 +205,7 @@ describe('createWinnersPage', () => {
 
     tableElement.innerHTML = '<p>Old content</p>';
 
-    (getWinnersWithCars as Mock).mockResolvedValue([
+    (winners.getWinnersWithCars as Mock).mockResolvedValue([
       { id: 4, name: 'Dave', color: 'yellow', wins: 2, time: 15 },
     ]);
 
