@@ -27,7 +27,7 @@ export function createGaragePage() {
 
   const pageContainer = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex flex-col w-full max-w-5xl pt-0',
+    extraClasses: 'relative flex flex-col w-full max-w-5xl pt-0',
   });
 
   const tableContainer = BlockComponent({

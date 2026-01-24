@@ -16,7 +16,7 @@ export function createPagination({
   const container = BlockComponent({
     tagName: 'div',
     extraClasses:
-      'fixed bottom-10 left-0 w-full flex gap-4 justify-center pt-4',
+      'absolute bottom-2 left-0 w-full flex gap-4 justify-center pt-4',
   });
 
   const className = 'min-w-10';

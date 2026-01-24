@@ -25,7 +25,7 @@ function renderTable(
 export function createWinnersPage() {
   const winnerPage = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex flex-col',
+    extraClasses: 'relative flex flex-col',
   });
 
   const tableElement = BlockComponent({ tagName: 'div' });
