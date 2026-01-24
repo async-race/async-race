@@ -36,11 +36,14 @@ export async function startRaceForCar(
     const { velocity, distance } = startResponse.data;
     const animation = onAnimationStart(velocity, distance);
     animation.start();
-
-    await Promise.race([engine.driveEngine(id), abortPromise]);
-
-    const time = animation.getTime() / 1000;
-    return { carId: id, time };
+    try {
+      await Promise.race([engine.driveEngine(id), abortPromise]);
+      const time = animation.getTime() / 1000;
+      return { carId: id, time };
+    } catch {
+      animation.stop();
+      throw new Error('Race error');
+    }
   } catch (error) {
     if ((error as DOMException).name === 'AbortError') {
       throw error;

@@ -42,28 +42,12 @@ export function raceControls({
     buttonGenerateCars,
   );
 
-  function setRaceButtonState(isDisabled: boolean) {
-    buttonStartRace.disabled = isDisabled;
-  }
-
-  function setResetButtonState(isDisabled: boolean) {
-    buttonResetRace.disabled = isDisabled;
-  }
-
-  function setResetLoading(isLoading: boolean) {
-    buttonResetRace.disabled = isLoading;
-    buttonResetRace.textContent = isLoading ? 'resetting…' : 'reset';
-  }
-
-  function setGenerateButtonState(isDisabled: boolean) {
-    buttonGenerateCars.disabled = isDisabled;
-  }
-
   return {
     element: controlsContainer,
-    setRaceButtonState,
-    setResetButtonState,
-    setResetLoading,
-    setGenerateButtonState,
+    buttons: {
+      start: buttonStartRace,
+      reset: buttonResetRace,
+      generate: buttonGenerateCars,
+    },
   };
 }

@@ -13,6 +13,7 @@ export type { WinnersWithCars } from './winners/get-winners-with-cars/get-winner
 import { startRaceForCar, stopRaceForCar } from './race/model/start-race';
 import { startRaceForAllCars } from './race/model/start-race-all';
 import { raceController } from './race/model/race-controller';
+import { startCarAnimation } from './race/model/car-animation';
 
 export const cars = { createCar, loadCars, updateCar, deleteCar, generateCars };
 export const winners = {
@@ -26,4 +27,5 @@ export const race = {
   startRaceForAllCars,
   stopRaceForCar,
   raceController,
+  startCarAnimation,
 };
