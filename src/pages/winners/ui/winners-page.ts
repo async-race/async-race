@@ -12,17 +12,12 @@ export function createWinnersPage() {
     extraClasses: 'flex flex-col',
   });
 
-  const indexPage = BlockComponent({
-    tagName: 'h4',
-    textContent: `Page # ${String(winnersQueryStore.get().page)}`,
-  });
-
   const tableElement = BlockComponent({ tagName: 'div' });
 
   void initWinners();
   const pagination = initPagination();
 
-  winnerPage.append(indexPage, tableElement, pagination.element);
+  winnerPage.append(tableElement, pagination.element);
 
   function renderTable(winnersWithCars: WinnersWithCars[]): HTMLElement {
     const { sort, order, page } = winnersQueryStore.get();
@@ -41,7 +36,6 @@ export function createWinnersPage() {
   function initPagination() {
     const onPageChange = (page: number) => {
       winnersQueryStore.set({ page });
-      indexPage.textContent = `Page # ${String(page)}`;
       paginationElement.update();
     };
 

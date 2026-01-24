@@ -25,6 +25,12 @@ export function winnerTable({
     extraClasses: 'flex flex-col',
   });
 
+  const totalLabel = BlockComponent({
+    tagName: 'h4',
+    textContent: `Winners (${winners.length.toString()})`,
+    extraClasses: 'text-center p-0',
+  });
+
   const headerRow = BlockComponent({
     tagName: 'div',
     extraClasses:
@@ -74,7 +80,7 @@ export function winnerTable({
       children: [timeHeader],
     }),
   );
-  container.append(headerRow);
+  container.append(totalLabel, headerRow);
 
   const start = (page - 1) * pageSize;
   winners.forEach((winner, index) => {
