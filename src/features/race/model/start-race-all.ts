@@ -1,6 +1,7 @@
 import { startRaceForCar } from './start-race';
 import { updateWinners } from '@/features/winners/update/model/update';
 import { notifyUser } from '@/features/notify-user/notify-user';
+import { carsStore } from '@/entities';
 
 export async function startRaceForAllCars(
   cars: {
@@ -24,8 +25,9 @@ export async function startRaceForAllCars(
     onEnd();
 
     await updateWinners(winner.carId, winner.time);
+    const winnerName = carsStore.getById(winner.carId)?.name;
     notifyUser(
-      `Winner: car #${winner.carId.toString()} (${winner.time.toFixed(2)}s)`,
+      `Winner: car #${winner.carId.toString()} ${winnerName || ''} with (${winner.time.toFixed(2)}s)`,
     );
   } catch {
     notifyUser('No winners');

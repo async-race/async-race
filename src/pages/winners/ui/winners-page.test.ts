@@ -16,7 +16,7 @@ type PaginationInstance = {
 
 vi.mock('@/entities', () => ({
   winnersStore: {
-    get: vi.fn(() => ({ winners: [], total: 0 })),
+    get: vi.fn(() => ({ items: [], total: 0 })),
     subscribe: vi.fn(),
   },
   winnersQueryStore: {
@@ -35,7 +35,7 @@ vi.mock('@/widgets/pagination/ui/pagination', () => ({
 
 vi.mock('@/pages/model/init', () => ({ initWinners: vi.fn() }));
 vi.mock('@/features/get-winners-with-cars/get-winners-with-cars', () => ({
-  getWinnersWithCars: vi.fn((winners: WinnersWithCars[]) => winners),
+  getWinnersWithCars: vi.fn((items: WinnersWithCars[]) => items),
 }));
 
 describe('createWinnersPage', () => {
@@ -43,7 +43,7 @@ describe('createWinnersPage', () => {
 
   beforeEach(() => {
     (winnersStore.get as Mock).mockReturnValue({
-      winners: [
+      items: [
         { id: 1, name: 'Alice', color: 'red', wins: 3, time: 12.5 },
         { id: 2, name: 'Bob', color: 'blue', wins: 5, time: 10.2 },
       ] as WinnersWithCars[],
@@ -182,7 +182,7 @@ describe('createWinnersPage', () => {
     expect(callArguments.getPage()).toBe(5);
 
     (winnersStore.get as Mock).mockReturnValue({
-      winners: [],
+      items: [],
       total: 42,
     });
 
@@ -305,7 +305,7 @@ describe('createWinnersPage', () => {
       order: 'ASC',
     });
     (winnersStore.get as Mock).mockReturnValue({
-      winners: [{ id: 1, name: 'TestUser', color: 'black', wins: 1, time: 1 }],
+      items: [{ id: 1, name: 'TestUser', color: 'black', wins: 1, time: 1 }],
       total: 1,
     });
     (winnersStore.subscribe as Mock).mockImplementation(

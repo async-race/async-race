@@ -41,7 +41,7 @@ export function createGaragePage() {
       controls.setAddDisabled(true);
       controls.setEditDisabled(true);
       setDisabled(true);
-      const { cars } = carsStore.get();
+      const { items: cars } = carsStore.get();
 
       const raceCars = cars.map((car) => {
         const carItem = carItems.get(car.id.toString());
@@ -83,7 +83,7 @@ export function createGaragePage() {
   pageContainer.append(controlsTotalBlock, tableContainer, pagination.element);
 
   function render() {
-    const { cars, total } = carsStore.get();
+    const { items: cars, total } = carsStore.get();
     const { widgetContainer: carListElement, items } = carList(cars, total, {
       onEdit: (id, dto) => {
         selectedCarId = id;

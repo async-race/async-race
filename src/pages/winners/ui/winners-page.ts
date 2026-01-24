@@ -64,7 +64,7 @@ export function createWinnersPage() {
   winnersStore.subscribe(() => {
     void (async () => {
       const winnersWithCars = await getWinnersWithCars(
-        winnersStore.get().winners,
+        winnersStore.get().items,
       );
       const newTable = renderTable(winnersWithCars);
       tableElement.innerHTML = '';
