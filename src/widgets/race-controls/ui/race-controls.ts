@@ -6,7 +6,7 @@ export function raceControls({
   onGenerate,
   onReset,
   onStartRace,
-}: RaceControlProps): HTMLElement {
+}: RaceControlProps) {
   const controlsContainer = BlockComponent({
     tagName: 'div',
     extraClasses: 'flex gap-2',
@@ -45,5 +45,12 @@ export function raceControls({
     buttonGenerateCars,
   );
 
-  return controlsContainer;
+  return {
+    element: controlsContainer,
+    buttons: {
+      start: buttonStartRace,
+      reset: buttonResetRace,
+      generate: buttonGenerateCars,
+    },
+  };
 }

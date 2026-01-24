@@ -31,7 +31,11 @@ export function createCarControls({
     textContent: 'Stop',
     extraClasses: 'h-7 px-3 p-1 bg-red-500 hover:bg-red-700',
     onClick: onStop,
+    disabled: true,
   });
   widgetContainer.append(selectButton, startButton, deleteButton, stopButton);
-  return widgetContainer;
+  return {
+    widgetContainer,
+    buttons: { selectButton, deleteButton, startButton, stopButton },
+  };
 }

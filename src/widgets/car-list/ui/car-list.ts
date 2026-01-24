@@ -19,7 +19,18 @@ export function carList(
     extraClasses: 'text-center p-0',
   });
   widgetContainer.append(totalLabel);
-  const items = new Map<string, HTMLElement>();
+  const items = new Map<
+    string,
+    {
+      car: SVGSVGElement;
+      buttons: {
+        selectButton: HTMLButtonElement;
+        deleteButton: HTMLButtonElement;
+        startButton: HTMLButtonElement;
+        stopButton: HTMLButtonElement;
+      };
+    }
+  >();
   cars.forEach((car) => {
     const carContainer = BlockComponent({
       tagName: 'p',
@@ -36,7 +47,7 @@ export function carList(
       extraClasses: 'w-15 h-15',
     });
 
-    const controls = createCarControls({
+    const { widgetContainer: controls, buttons } = createCarControls({
       onEdit: () => {
         const dto = { name: car.name, color: car.color };
         onEdit(car.id, dto);
@@ -61,7 +72,7 @@ export function carList(
     roadContainer.append(label, newCar);
     carContainer.append(controls, roadContainer, raceFlag);
     widgetContainer.append(carContainer);
-    items.set(String(car.id), carContainer);
+    items.set(String(car.id), { car: newCar, buttons });
   });
-  return widgetContainer;
+  return { widgetContainer, items };
 }

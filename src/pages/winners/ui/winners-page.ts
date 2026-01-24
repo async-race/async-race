@@ -1,10 +1,9 @@
 import { winnersStore, winnersQueryStore, WINNERS_ON_PAGE } from '@/entities';
-import { BlockComponent } from '@/shared/ui/block-component/block-component';
-import { createPagination } from '@/widgets/pagination/ui/pagination';
-import { winnerTable } from '@/widgets/winner-table/ui/winner-table';
-import { initWinners } from '@/pages/model/init';
-import { getWinnersWithCars } from '@/features/get-winners-with-cars/get-winners-with-cars';
-import type { WinnersWithCars } from '@/pages/model/types';
+import { BlockComponent } from '@/shared';
+import { createPagination, winnerTable } from '@/widgets';
+import { initWinners } from '../model/init';
+import { winners } from '@/features';
+import type { WinnersWithCars } from '@/features';
 
 function renderTable(
   winnersWithCars: WinnersWithCars[],
@@ -60,8 +59,8 @@ export function createWinnersPage() {
 
   winnersStore.subscribe(() => {
     void (async () => {
-      const winnersWithCars = await getWinnersWithCars(
-        winnersStore.get().winners,
+      const winnersWithCars = await winners.getWinnersWithCars(
+        winnersStore.get().items,
       );
       const { sort, order, page } = winnersQueryStore.get();
 

@@ -1,6 +1,5 @@
-import type { Winner } from '@/entities/winner/model/types';
-import type { Car } from '@/entities/car/model/types';
-import { getCar } from '@/entities/car/api/car.api';
+import type { Winner, Car } from '@/entities';
+import { car } from '@/entities';
 
 export type WinnersWithCars = Winner & Pick<Car, 'name' | 'color'>;
 
@@ -8,7 +7,7 @@ export function getWinnersWithCars(
   winners: Winner[],
 ): Promise<WinnersWithCars[]> {
   const winnersIds = winners.map((winner) => winner.id);
-  const cars = winnersIds.map((id) => getCar(id));
+  const cars = winnersIds.map((id) => car.getCar(id));
   return Promise.all(cars)
     .then((responses) => {
       return winners.map((winner: Winner) => {

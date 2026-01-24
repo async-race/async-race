@@ -1,4 +1,4 @@
-import type { WinnersWithCars } from '@/pages/model/types';
+import type { WinnersWithCars } from '@/features';
 import { BlockComponent } from '@/shared/ui/block-component/block-component';
 import { carSvg } from '@/shared/ui/car-template/car.template';
 import { winnerTableHeader } from '@/widgets/winner-table-header/ui/winner-table-header';

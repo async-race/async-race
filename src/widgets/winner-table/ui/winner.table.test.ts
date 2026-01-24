@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { winnerTable } from './winner-table';
-import type { WinnersWithCars } from '@/pages/model/types';
+import type { WinnersWithCars } from '@/features';
 
 const mockWinners: WinnersWithCars[] = [
   { id: 1, name: 'BMW', color: '#000000', wins: 3, time: 12.5 },

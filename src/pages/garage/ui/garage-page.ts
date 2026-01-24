@@ -1,37 +1,29 @@
-import { carsQueryStore, carsStore, CARS_ON_PAGE } from '@/entities';
-import { cars as carsAPI } from '@/features';
+import { carsStore } from '@/entities';
 import { BlockComponent } from '@/shared';
-import { carList, createPagination, carPanel, raceControls } from '@/widgets';
 import { initCars } from '../model/init';
-import { generateCars } from '@/features/generate-cars/generate-cars';
+import { initGaragePagination } from '../model/pagination';
+import { initGarageControls } from '../model/controls';
+import { initGarageRaceControls } from '../model/race-controls';
+import { renderGarageCarList } from '../model/render';
+import type { CarItem } from '../model/types';
 
 export function createGaragePage() {
   let selectedCarId: number | null = null;
+  let carItems: Map<string, CarItem> = new Map();
 
   void initCars();
-  const pagination = initPagination();
-  const controls = initControls(() => selectedCarId);
-  const controlsTotalBlock = BlockComponent({
+
+  const pagination = initGaragePagination();
+  const controls = initGarageControls(() => selectedCarId);
+
+  const controlsContainer = BlockComponent({
     tagName: 'div',
     extraClasses: 'flex flex-col items-center ml-[20px] pt-0 pb-0',
   });
 
-  const raceControlsButtons = raceControls({
-    onGenerate: () => {
-      void (async () => {
-        await generateCars();
-        await initCars();
-      })();
-    },
-    onReset: () => {
-      console.log('Reset race');
-    },
-    onStartRace: () => {
-      console.log('Start race');
-    },
-  });
+  const raceControls = initGarageRaceControls(() => carItems);
 
-  controlsTotalBlock.append(controls.element, raceControlsButtons);
+  controlsContainer.append(controls.element, raceControls.element);
 
   const pageContainer = BlockComponent({
     tagName: 'div',
@@ -43,35 +35,26 @@ export function createGaragePage() {
     extraClasses: 'flex flex-col',
   });
 
-  pageContainer.append(controlsTotalBlock, tableContainer, pagination.element);
+  pageContainer.append(controlsContainer, tableContainer, pagination.element);
 
-  function render() {
-    const { cars, total } = carsStore.get();
-    const carListElement = carList(cars, total, {
-      onEdit: (id, dto) => {
+  carsStore.subscribe(() => {
+    renderGarageCarList({
+      raceControls: raceControls.buttons,
+      tableContainer,
+      pagination,
+      controls,
+      carItemsRef: {
+        get: () => carItems,
+        set: (items) => {
+          carItems = items;
+        },
+      },
+      setSelectedCarId: (id) => {
         selectedCarId = id;
-        controls.setDisabled(false);
-        controls.setEditValues(dto);
       },
-      onDelete: (id) => {
-        void carsAPI.deleteCar(id);
-        if (selectedCarId === id) {
-          controls.setDisabled(true);
-          selectedCarId = null;
-        }
-      },
-      onStart: (id) => {
-        console.log('Start', id);
-      },
-      onStop: (id) => {
-        console.log('Stop', id);
-      },
+      getSelectedCarId: () => selectedCarId,
     });
-    tableContainer.replaceChildren(carListElement);
-    pagination.update();
-  }
-
-  carsStore.subscribe(render);
+  });
 
   return {
     element: pageContainer,
@@ -83,53 +66,3 @@ export function createGaragePage() {
     },
   };
 }
-
-const initPagination = () => {
-  const onPageChange = (page: number) => {
-    carsQueryStore.set({ page });
-    paginationElement.update();
-  };
-
-  const paginationElement = createPagination({
-    getPage: () => {
-      const { page } = carsQueryStore.get();
-      return page;
-    },
-    getTotal: () => {
-      const { total } = carsStore.get();
-      return total;
-    },
-    pageSize: CARS_ON_PAGE,
-    onChange: onPageChange,
-  });
-
-  return paginationElement;
-};
-
-const initControls = (getSelectedId: () => number | null) => {
-  const controlsContainer = BlockComponent({
-    tagName: 'div',
-    extraClasses: 'flex flex-col justify-center items-center',
-  });
-
-  const carAddControls = carPanel('create', (dto) => {
-    void carsAPI.createCar(dto);
-  });
-
-  const carUpdateControls = carPanel('update', (dto) => {
-    const id = getSelectedId();
-    if (id !== null) {
-      void carsAPI.updateCar(id, dto);
-    }
-    carUpdateControls.setDisabled(true);
-  });
-
-  carUpdateControls.setDisabled(true);
-  controlsContainer.append(carAddControls.element, carUpdateControls.element);
-
-  return {
-    element: controlsContainer,
-    setEditValues: carUpdateControls.setValues,
-    setDisabled: carUpdateControls.setDisabled,
-  };
-};
