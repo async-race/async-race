@@ -24,8 +24,6 @@ export function initGarageRaceControls(
       const { items: cars } = carsStore.get();
 
       void stoptRaceForAllCars(cars, () => {
-        // controls.setAddDisabled(false);
-
         getCarItems().forEach((item) => {
           item.stopAnimation?.();
           item.car.style.transform = 'translateX(0)';
@@ -35,8 +33,6 @@ export function initGarageRaceControls(
     },
 
     onStartRace: () => {
-      // controls.setAddDisabled(true);
-      // controls.setEditDisabled(true);
       raceState.set({ mode: 'all', phase: 'running' });
       const { items: cars } = carsStore.get();
 
