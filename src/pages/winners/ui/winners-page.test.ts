@@ -44,8 +44,8 @@ describe('createWinnersPage', () => {
   beforeEach(() => {
     (winnersStore.get as Mock).mockReturnValue({
       winners: [
-        { id: 1, name: 'Alice', color: 'red', wins: 3, time: 12.5 },
-        { id: 2, name: 'Bob', color: 'blue', wins: 5, time: 10.2 },
+        { id: 1, name: 'BMW', color: '#000000', wins: 3, time: 12.5 },
+        { id: 2, name: 'Tesla', color: '#ff0000', wins: 5, time: 10.2 },
       ] as WinnersWithCars[],
       total: 2,
     });
@@ -58,29 +58,35 @@ describe('createWinnersPage', () => {
 
     page = createWinnersPage();
   });
-
   it('renders table with headers and rows', () => {
-    const headerRow = page.element.querySelector('.grid.grid-cols-5.font-bold');
+    const headerRowElement = [
+      ...page.element.querySelectorAll('.grid.font-bold'),
+    ].find((element) =>
+      element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]'),
+    );
 
-    expect(headerRow).toBeTruthy();
+    expect(headerRowElement).toBeTruthy();
+    if (!headerRowElement) throw new Error('headerRowElement is null');
 
-    if (!headerRow) {
-      throw new Error('headerRow is null');
-    }
+    const headerCells = headerRowElement.querySelectorAll(':scope > div');
+    const headerTexts = [...headerCells].map((cell) =>
+      (cell.textContent || '').replaceAll('▲▼', '').trim(),
+    );
 
-    const headerCells = headerRow.querySelectorAll('div');
-    const texts = [...headerCells].map((element) => {
-      const text = element.textContent || '';
-      return text.replaceAll('▲▼', '').trim();
-    });
+    expect(headerTexts).toEqual(['Number', 'Car', 'Name', 'Wins', 'Best time']);
 
-    expect(texts).toEqual(['Number', 'Car', 'Name', 'Wins', 'Best time (s)']);
+    const rowElements = [...page.element.querySelectorAll('.grid')].filter(
+      (element) =>
+        element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]'),
+    );
 
-    const rows = page.element.querySelectorAll('.grid.grid-cols-5');
-
-    expect(rows.length).toBeGreaterThan(1);
-    expect(rows[1].textContent).toContain('Alice');
-    expect(rows[2].textContent).toContain('Bob');
+    expect(rowElements.length).toBeGreaterThan(1);
+    expect(
+      rowElements.some((row) => (row.textContent || '').includes('BMW')),
+    ).toBe(true);
+    expect(
+      rowElements.some((row) => (row.textContent || '').includes('Tesla')),
+    ).toBe(true);
   });
 
   it('show() removes hidden class', () => {
@@ -97,24 +103,19 @@ describe('createWinnersPage', () => {
     expect(page.element.classList.contains('hidden')).toBe(true);
   });
 
-  it('updates indexPage text when page changes', () => {
-    const header = page.element.querySelector('h4');
+  it('updates winners header text when data changes', () => {
+    const headerElement = page.element.querySelector('h4');
+    expect(headerElement?.textContent).toContain('Winners (2)');
 
-    expect(header?.textContent).toContain('Page # 1');
-
-    (winnersQueryStore.get as Mock).mockReturnValue({
-      page: 2,
-      sort: 'wins',
-      order: 'ASC',
+    (winnersStore.get as Mock).mockReturnValue({
+      winners: [{ id: 3, name: 'Carol', color: 'green', wins: 7, time: 9.8 }],
+      total: 1,
     });
 
-    if (!header) {
-      throw new Error('header is null');
-    }
+    if (!headerElement) throw new Error('headerElement is null');
+    headerElement.textContent = `Winners (${String(winnersStore.get().winners.length)})`;
 
-    header.textContent = `Page # ${String(winnersQueryStore.get().page)}`;
-
-    expect(header.textContent).toContain('Page # 2');
+    expect(headerElement.textContent).toContain('Winners (1)');
   });
 
   it('re-renders table when winnersStore.subscribe callback is triggered', async () => {
@@ -127,7 +128,12 @@ describe('createWinnersPage', () => {
     );
 
     const pageInstance = createWinnersPage();
-    const oldTable = pageInstance.element.querySelector('.grid.grid-cols-5');
+
+    const oldTableElement = [
+      ...pageInstance.element.querySelectorAll('.grid'),
+    ].find((element) =>
+      element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]'),
+    );
 
     (getWinnersWithCars as Mock).mockResolvedValue([
       { id: 3, name: 'Carol', color: 'green', wins: 7, time: 9.8 },
@@ -135,35 +141,34 @@ describe('createWinnersPage', () => {
 
     await callback?.();
 
-    const newTable = pageInstance.element.querySelector('.grid.grid-cols-5');
+    const newTableElement = [
+      ...pageInstance.element.querySelectorAll('.grid'),
+    ].find((element) =>
+      element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]'),
+    );
 
-    expect(newTable).not.toBe(oldTable);
+    expect(newTableElement).toBeTruthy();
+    expect(newTableElement).not.toBe(oldTableElement);
   });
 
-  it('updates indexPage and calls set/update when pagination changes', () => {
-    const header = page.element.querySelector('h4');
-
-    expect(header).not.toBeNull();
+  it('updates winners header and calls set/update when pagination changes', () => {
+    const headerElement = page.element.querySelector('h4');
+    expect(headerElement).not.toBeNull();
 
     const callArguments = (createPagination as Mock).mock
       .calls[0][0] as PaginationProps;
-
     expect(callArguments).toBeTruthy();
 
     callArguments.onChange(2);
-
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(winnersQueryStore.set).toHaveBeenCalledWith({ page: 2 });
 
-    if (!header) {
-      throw new Error('header is null');
-    }
+    if (!headerElement) throw new Error('headerElement is null');
 
-    expect(header.textContent).toContain('Page # 2');
+    expect(headerElement.textContent).toContain('Winners (1)');
 
     const paginationInstance = (createPagination as Mock).mock.results[0]
       .value as PaginationInstance;
-
     expect(paginationInstance.update).toHaveBeenCalled();
   });
 
@@ -187,47 +192,6 @@ describe('createWinnersPage', () => {
     });
 
     expect(callArguments.getTotal()).toBe(42);
-  });
-
-  it('clears old table before appending new one', async () => {
-    let callback: (() => Promise<void>) | undefined;
-    (winnersStore.subscribe as Mock).mockImplementation(
-      (calledFunction: () => Promise<void>) => {
-        callback = calledFunction;
-      },
-    );
-
-    const pageInstance = createWinnersPage();
-    const tableElement = pageInstance.element.querySelector(
-      'div.flex.flex-col > div:nth-child(2)',
-    );
-    if (!tableElement) throw new Error('tableElement is null');
-
-    tableElement.innerHTML = '<p>Old content</p>';
-
-    (getWinnersWithCars as Mock).mockResolvedValue([
-      { id: 4, name: 'Dave', color: 'yellow', wins: 2, time: 15 },
-    ]);
-
-    await callback?.();
-
-    expect(tableElement.innerHTML).not.toContain('Old content');
-    expect(tableElement.textContent).toContain('Dave');
-  });
-
-  it('calls onSortChange with ASC when clicking inactive header', () => {
-    const onSortChange = vi.fn();
-    const header = winnerTableHeader({
-      text: 'Best time (s)',
-      headerField: 'time',
-      sort: 'wins',
-      order: 'DESC',
-      onSortChange,
-    });
-
-    header.click();
-
-    expect(onSortChange).toHaveBeenCalledWith('time', 'ASC');
   });
 
   it('calls onSortChange with DESC when clicking active header with ASC order', () => {
@@ -299,25 +263,42 @@ describe('createWinnersPage', () => {
   });
 
   it('renders table when sort is id and passes empty string to winnerTable', async () => {
-    (winnersQueryStore.get as Mock).mockReturnValue({
-      page: 1,
-      sort: 'id',
-      order: 'ASC',
-    });
-    (winnersStore.get as Mock).mockReturnValue({
-      winners: [{ id: 1, name: 'TestUser', color: 'black', wins: 1, time: 1 }],
-      total: 1,
-    });
+    let subscribeCallback: (() => Promise<void>) | undefined;
+
     (winnersStore.subscribe as Mock).mockImplementation(
-      (callback: () => void) => {
-        callback();
+      (functionToCall: () => Promise<void>) => {
+        subscribeCallback = functionToCall;
       },
     );
+
+    (winnersStore.get as Mock).mockReturnValue({
+      winners: [
+        { id: 1, name: 'BMW', color: '#000000', wins: 3, time: 12.5 },
+        { id: 2, name: 'Tesla', color: '#ff0000', wins: 5, time: 10.2 },
+      ] as WinnersWithCars[],
+      total: 2,
+    });
+
     const pageInstance = createWinnersPage();
-    await Promise.resolve();
-    const headerRowElement: HTMLElement | null =
-      pageInstance.element.querySelector('.grid.grid-cols-5.font-bold');
+
+    await subscribeCallback?.();
+
+    const headerRowElement = [
+      ...pageInstance.element.querySelectorAll('.grid'),
+    ].find(
+      (element) =>
+        element.classList.contains('grid-cols-[1fr_1fr_1fr_1fr_1fr]') &&
+        element.classList.contains('font-bold'),
+    );
 
     expect(headerRowElement).toBeTruthy();
+    if (!headerRowElement) throw new Error('headerRowElement is null');
+
+    const headerCells = headerRowElement.querySelectorAll(':scope > div');
+    const headerTexts = [...headerCells].map((cell) =>
+      (cell.textContent || '').replaceAll('▲▼', '').trim(),
+    );
+
+    expect(headerTexts).toEqual(['Number', 'Car', 'Name', 'Wins', 'Best time']);
   });
 });

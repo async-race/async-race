@@ -6,6 +6,23 @@ import { initWinners } from '@/pages/model/init';
 import { getWinnersWithCars } from '@/features/get-winners-with-cars/get-winners-with-cars';
 import type { WinnersWithCars } from '@/pages/model/types';
 
+function renderTable(
+  winnersWithCars: WinnersWithCars[],
+  sort: '' | 'wins' | 'time',
+  order: 'ASC' | 'DESC',
+  page: number,
+  onSortChange: (field: 'wins' | 'time', order: 'ASC' | 'DESC') => void,
+): HTMLElement {
+  return winnerTable({
+    winners: winnersWithCars,
+    page,
+    pageSize: WINNERS_ON_PAGE,
+    sort,
+    order,
+    onSortChange,
+  });
+}
+
 export function createWinnersPage() {
   const winnerPage = BlockComponent({
     tagName: 'div',
@@ -18,20 +35,6 @@ export function createWinnersPage() {
   const pagination = initPagination();
 
   winnerPage.append(tableElement, pagination.element);
-
-  function renderTable(winnersWithCars: WinnersWithCars[]): HTMLElement {
-    const { sort, order, page } = winnersQueryStore.get();
-    return winnerTable({
-      winners: winnersWithCars,
-      page: page,
-      pageSize: WINNERS_ON_PAGE,
-      sort: sort === 'id' ? '' : sort,
-      order,
-      onSortChange: (field, newOrder) => {
-        winnersQueryStore.set({ sort: field, order: newOrder });
-      },
-    });
-  }
 
   function initPagination() {
     const onPageChange = (page: number) => {
@@ -60,7 +63,18 @@ export function createWinnersPage() {
       const winnersWithCars = await getWinnersWithCars(
         winnersStore.get().winners,
       );
-      const newTable = renderTable(winnersWithCars);
+      const { sort, order, page } = winnersQueryStore.get();
+
+      const newTable = renderTable(
+        winnersWithCars,
+        sort === 'id' ? '' : sort,
+        order,
+        page,
+        (field, newOrder) => {
+          winnersQueryStore.set({ sort: field, order: newOrder });
+        },
+      );
+
       tableElement.innerHTML = '';
       tableElement.append(newTable);
     })();
