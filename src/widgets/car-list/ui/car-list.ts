@@ -42,7 +42,7 @@ export function carList(
         'flex flex-1 flex-col justify-start border-b-4 border-dashed p-0',
     });
     const raceFlag = Image({
-      source: '/src/assets/racing-flag.svg',
+      source: './racing-flag.svg',
       alt: 'racing-flag',
       extraClasses: 'w-15 h-15',
     });
