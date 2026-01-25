@@ -23,12 +23,24 @@ export function carPanel(
 ) {
   const widgetContainer = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex gap-2',
+    extraClasses: 'flex gap-2 items-center',
   });
   const input = createInputs();
+
+  const carNameLabel = document.createElement('label');
+  carNameLabel.htmlFor = 'car-model';
+  carNameLabel.textContent = 'Car model:';
+  carNameLabel.className = 'text-sm font-medium';
+
+  const carColorLabel = document.createElement('label');
+  carColorLabel.htmlFor = 'car-color';
+  carColorLabel.textContent = 'Car color:';
+  carColorLabel.className = 'text-sm font-medium';
+
   const button = Button({
     textContent: type.toUpperCase(),
-    extraClasses: 'h-7 px-2 bg-sky-400 hover:bg-sky-700 text-xs',
+    extraClasses:
+      'h-7 px-2 bg-indigo-700 hover:bg-indigo-900 text-white font-semibold text-xs',
     onClick() {
       onSubmit({ name: input.carName.value, color: input.carColor.value });
       resetValues();
@@ -52,7 +64,13 @@ export function carPanel(
     input.carColor.value = values.color;
   }
 
-  widgetContainer.append(input.carName, input.carColor, button);
+  widgetContainer.append(
+    carNameLabel,
+    input.carName,
+    carColorLabel,
+    input.carColor,
+    button,
+  );
 
   return { element: widgetContainer, setDisabled, setValues };
 }
