@@ -27,7 +27,12 @@ export function createGaragePage() {
 
   const pageContainer = BlockComponent({
     tagName: 'div',
-    extraClasses: 'flex flex-col w-full max-w-5xl pt-0',
+    extraClasses: 'flex flex-col flex-1 w-full max-w-5xl pt-0',
+  });
+
+  const contentContainer = BlockComponent({
+    tagName: 'div',
+    extraClasses: 'flex-1 flex flex-col',
   });
 
   const tableContainer = BlockComponent({
@@ -35,7 +40,8 @@ export function createGaragePage() {
     extraClasses: 'flex flex-col',
   });
 
-  pageContainer.append(controlsContainer, tableContainer, pagination.element);
+  contentContainer.append(controlsContainer, tableContainer);
+  pageContainer.append(contentContainer, pagination.element);
 
   carsStore.subscribe(() => {
     renderGarageCarList({

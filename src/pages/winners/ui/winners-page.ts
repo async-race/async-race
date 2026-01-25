@@ -28,16 +28,23 @@ export function createWinnersPage() {
     extraClasses: 'flex flex-col',
   });
 
+  const contentContainer = BlockComponent({
+    tagName: 'div',
+    extraClasses: 'flex-1 flex flex-col',
+  });
+
   const tableElement = BlockComponent({ tagName: 'div' });
 
   void initWinners();
   const pagination = initPagination();
 
-  winnerPage.append(tableElement, pagination.element);
+  contentContainer.append(tableElement);
+  winnerPage.append(contentContainer, pagination.element);
 
   function initPagination() {
     const onPageChange = (page: number) => {
       winnersQueryStore.set({ page });
+      void initWinners();
       paginationElement.update();
     };
 
