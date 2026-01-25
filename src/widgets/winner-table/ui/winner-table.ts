@@ -1,3 +1,4 @@
+import { winnersStore } from '@/entities';
 import type { WinnersWithCars } from '@/features';
 import { BlockComponent } from '@/shared/ui/block-component/block-component';
 import { carSvg } from '@/shared/ui/car-template/car.template';
@@ -25,9 +26,11 @@ export function winnerTable({
     extraClasses: 'flex flex-col',
   });
 
+  const { total } = winnersStore.get();
+
   const totalLabel = BlockComponent({
     tagName: 'h4',
-    textContent: `Winners (${winners.length.toString()})`,
+    textContent: `Winners (${total.toString()})`,
     extraClasses: 'text-center p-0',
   });
 

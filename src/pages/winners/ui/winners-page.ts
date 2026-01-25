@@ -84,6 +84,7 @@ export function createWinnersPage() {
       tableElement.innerHTML = '';
       tableElement.append(newTable);
     })();
+    pagination.update();
   });
 
   return {
