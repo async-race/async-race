@@ -165,7 +165,7 @@ describe('createWinnersPage', () => {
 
     if (!headerElement) throw new Error('headerElement is null');
 
-    expect(headerElement.textContent).toContain('Winners (1)');
+    expect(headerElement.textContent).toContain('Winners (2)');
 
     const paginationInstance = (createPagination as Mock).mock.results[0]
       .value as PaginationInstance;
