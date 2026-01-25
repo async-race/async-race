@@ -1,6 +1,5 @@
 import { navigate } from '@/app/router/router';
-import { BlockComponent } from '@/shared/ui/block-component/block-component';
-import { Button } from '@/shared/ui/button/button';
+import { BlockComponent, Button } from '@/shared';
 
 export function createHeader() {
   const header = BlockComponent({

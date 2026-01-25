@@ -25,6 +25,7 @@ vi.mock('@/shared', () => ({
   Button: vi.fn(
     ({
       textContent,
+      disabled = false,
       onClick,
     }: {
       textContent: string;
@@ -34,6 +35,7 @@ vi.mock('@/shared', () => ({
     }) => {
       const button = document.createElement('button');
       button.textContent = textContent;
+      button.disabled = disabled;
       if (onClick) button.addEventListener('click', onClick);
       return button;
     },

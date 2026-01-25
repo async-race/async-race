@@ -1,4 +1,4 @@
-import { BlockComponent } from '@/shared/ui/block-component/block-component';
+import { BlockComponent } from '@/shared';
 
 export function createFooter() {
   const footer = BlockComponent({
