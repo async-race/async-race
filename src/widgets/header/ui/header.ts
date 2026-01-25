@@ -10,7 +10,8 @@ export function createHeader() {
 
   const garageButton = Button({
     textContent: 'Garage',
-    extraClasses: 'h-8 px-3 bg-sky-400 hover:bg-sky-700 text-sm',
+    extraClasses:
+      'h-8 px-3 bg-indigo-700 hover:bg-indigo-900 text-white font-semibold text-sm',
     onClick: () => {
       navigate('garage');
     },
@@ -18,7 +19,8 @@ export function createHeader() {
 
   const winnerButton = Button({
     textContent: 'Winners',
-    extraClasses: 'h-8 px-3 bg-sky-400 hover:bg-sky-700 text-sm',
+    extraClasses:
+      'h-8 px-3 bg-indigo-700 hover:bg-indigo-900 text-white font-semibold text-sm',
     onClick: () => {
       navigate('winners');
     },
