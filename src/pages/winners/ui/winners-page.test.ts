@@ -160,7 +160,6 @@ describe('createWinnersPage', () => {
     expect(callArguments).toBeTruthy();
 
     callArguments.onChange(2);
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(winnersQueryStore.set).toHaveBeenCalledWith({ page: 2 });
 
     if (!headerElement) throw new Error('headerElement is null');

@@ -26,7 +26,7 @@ export const raceState = {
     return state;
   },
 
-  set(patch: Partial<RaceState>) {
+  set(this: void, patch: Partial<RaceState>) {
     state = {
       ...state,
       ...patch,
@@ -56,7 +56,7 @@ export const raceState = {
     notify();
   },
 
-  reset() {
+  reset(this: void) {
     state = {
       mode: 'idle',
       phase: 'ready',
