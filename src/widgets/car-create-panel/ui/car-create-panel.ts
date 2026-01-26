@@ -8,12 +8,14 @@ const createInputs = () => ({
     id: 'car-model',
     name: 'car-model',
     extraClasses: 'h-7 px-2 text-xs',
+    ariaLabel: 'car model name',
   }),
   carColor: Input({
     type: 'color',
     id: 'car-color',
     name: 'car-color',
     extraClasses: 'w-8 h-7 p-0 appearance-none',
+    ariaLabel: 'car color',
   }),
 });
 
@@ -26,16 +28,6 @@ export function carPanel(
     extraClasses: 'flex gap-2 items-center',
   });
   const input = createInputs();
-
-  const carNameLabel = document.createElement('label');
-  carNameLabel.htmlFor = 'car-model';
-  carNameLabel.textContent = 'Car model:';
-  carNameLabel.className = 'text-sm font-medium';
-
-  const carColorLabel = document.createElement('label');
-  carColorLabel.htmlFor = 'car-color';
-  carColorLabel.textContent = 'Car color:';
-  carColorLabel.className = 'text-sm font-medium';
 
   const button = Button({
     textContent: type.toUpperCase(),
@@ -64,13 +56,7 @@ export function carPanel(
     input.carColor.value = values.color;
   }
 
-  widgetContainer.append(
-    carNameLabel,
-    input.carName,
-    carColorLabel,
-    input.carColor,
-    button,
-  );
+  widgetContainer.append(input.carName, input.carColor, button);
 
   return { element: widgetContainer, setDisabled, setValues };
 }

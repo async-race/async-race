@@ -18,9 +18,9 @@ describe('raceControls', () => {
     const buttonElements: NodeListOf<HTMLButtonElement> =
       controlsContainer.querySelectorAll('button');
 
-    expect(buttonElements[0].textContent).toBe('race');
-    expect(buttonElements[1].textContent).toBe('reset');
-    expect(buttonElements[2].textContent).toBe('generate cars');
+    expect(buttonElements[0].textContent).toBe('Race');
+    expect(buttonElements[1].textContent).toBe('Reset');
+    expect(buttonElements[2].textContent).toBe('Generate cars');
   });
 
   it('should call onStartRace when clicking the "race" button', () => {

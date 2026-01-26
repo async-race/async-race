@@ -14,10 +14,9 @@ vi.mock('@/entities', () => ({
     set: vi.fn(),
   },
 }));
-// eslint-disable-next-line @typescript-eslint/unbound-method
+
 const get = () => vi.mocked(carsQueryStore).get;
 const getCars = () => vi.mocked(car).getCars;
-// eslint-disable-next-line @typescript-eslint/unbound-method
 const set = () => vi.mocked(carsStore).set;
 
 describe('loadCars', () => {

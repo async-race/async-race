@@ -12,7 +12,7 @@ describe('Button component', () => {
   it('adds base Classes', () => {
     const button = Button({ textContent: 'Press me' });
 
-    expect(button.className).toContain('p-2 cursor-pointer');
+    expect(button.className).toContain('cursor-pointer');
   });
 
   it('adds extra Classes', () => {

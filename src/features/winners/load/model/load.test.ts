@@ -9,10 +9,8 @@ vi.mock('@/entities', () => ({
   winnersStore: { set: vi.fn() },
 }));
 
-// eslint-disable-next-line @typescript-eslint/unbound-method
 const get = () => vi.mocked(winnersQueryStore).get;
 const getWinners = () => vi.mocked(winner).getWinners;
-// eslint-disable-next-line @typescript-eslint/unbound-method
 const set = () => vi.mocked(winnersStore).set;
 
 describe('loadWinners', () => {

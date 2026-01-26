@@ -6,9 +6,9 @@ Welcome to the **Async Race** project! This is a high-performance Single Page Ap
 
 A customer has installed radio-controlled equipment with HTTP-compatible interfaces in his car collection. Our mission is to build a management dashboard to:
 
-1.  Control car engines (Start/Stop).
-2.  Organize drag-racing competitions.
-3.  Track and visualize race results.
+1. Control car engines (Start/Stop).
+2. Organize drag-racing competitions.
+3. Track and visualize race results.
 
 **Deadline:** We must launch within two weeks to beat the "The Fast and the Furious" company!
 
@@ -43,22 +43,21 @@ A customer has installed radio-controlled equipment with HTTP-compatible interfa
 
 ## Technical Stack & Requirements
 
-- **Language:** TypeScript (Strict mode: no `any`, no type assertions `as`, no non-null assertions `!`).
-- **Frameworks:** **None.** (Pure TypeScript/JavaScript only).
-- **Styling:** CSS / SASS Modules / Bootstrap (CSS only).
-- **Bundler:** Vite / Webpack.
+- **Language:** TypeScript (Strict mode: no `any`, no non-null assertions `!`).
+- **Frameworks:** **None.** (Pure TypeScript).
+- **Styling:** Tailwind.
+- **Bundler:** Vite.
 - **Code Quality:**
-  - Follows **Airbnb JavaScript Style Guide**.
   - **ESLint** with Unicorn configuration.
-  - Max function length: 40 lines.
   - No "magic numbers" or "magic strings".
 
 ## How to Run
 
-1. **Clone the Server Mock:**
-   ```bash
-   git clone [link-to-server-repo]
-   cd server-repo
-   npm install
-   npm start
-   ```
+**Clone the Server Mock and run before :**
+
+```bash
+git clone [link-to-server-repo]
+cd server-repo
+npm install
+npm start
+```
