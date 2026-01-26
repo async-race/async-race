@@ -8,10 +8,10 @@ describe('createFooter', () => {
     const footer = createFooter();
 
     expect(BlockComponent).toHaveBeenCalledWith({
-      tagName: 'p',
+      tagName: 'footer',
       extraClasses: 'font-bold p-1 pl-4',
     });
-    expect(footer.tagName.toLowerCase()).toBe('p');
+    expect(footer.tagName.toLowerCase()).toBe('footer');
   });
 
   it('should append a link with correct href, text and classes', () => {

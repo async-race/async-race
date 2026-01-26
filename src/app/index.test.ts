@@ -55,7 +55,7 @@ describe('startApp', () => {
 
     expect(createHeader).toHaveBeenCalled();
     expect(BlockComponent).toHaveBeenCalledWith({
-      tagName: 'div',
+      tagName: 'main',
       extraClasses: 'flex flex-1 justify-center',
     });
     expect(createFooter).toHaveBeenCalled();
