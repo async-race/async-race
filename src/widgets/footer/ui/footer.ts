@@ -1,8 +1,8 @@
-import { BlockComponent } from '@/shared/ui/block-component/block-component';
+import { BlockComponent } from '@/shared';
 
 export function createFooter() {
   const footer = BlockComponent({
-    tagName: 'p',
+    tagName: 'footer',
     extraClasses: 'font-bold p-1 pl-4',
   });
   const link = document.createElement('a');

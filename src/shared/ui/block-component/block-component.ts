@@ -13,7 +13,7 @@ export function BlockComponent({
   onClick?: (event: MouseEvent | KeyboardEvent) => void;
   children?: SVGSVGElement[] | HTMLElement[];
 }): HTMLElement {
-  const base = baseClasses[tagName];
+  const base = baseClasses[tagName] ?? '';
   const blockComponent = document.createElement(tagName);
   blockComponent.className = `${base} ${extraClasses}`.trim();
 
