@@ -18,7 +18,7 @@ describe('createHeader', () => {
 
     expect(BlockComponent).toHaveBeenCalledWith({
       tagName: 'header',
-      extraClasses: 'flex gap-4 pb-0',
+      extraClasses: 'flex gap-4 p-4',
     });
 
     expect(header.tagName.toLowerCase()).toBe('header');
