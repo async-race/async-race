@@ -5,7 +5,7 @@ export function createListStore<T extends { id: number }>() {
   const listeners = new Set<() => void>();
 
   return {
-    get() {
+    get(this: void) {
       return { items, total };
     },
 
@@ -21,7 +21,7 @@ export function createListStore<T extends { id: number }>() {
       });
     },
 
-    subscribe(listener: () => void) {
+    subscribe(this: void, listener: () => void) {
       listeners.add(listener);
       return () => listeners.delete(listener);
     },

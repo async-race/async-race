@@ -33,6 +33,12 @@ export default defineConfig(
     rules: {
       'no-console': 'warn',
       'no-warning-comments': 'warn',
+      '@typescript-eslint/no-invalid-void-type': [
+        'error',
+        {
+          allowAsThisParameter: true,
+        },
+      ],
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       'unicorn/no-array-callback-reference': 'off',
       'unicorn/no-array-for-each': 'off',

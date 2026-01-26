@@ -6,11 +6,11 @@ export function createQueryStore<Q extends Record<string, unknown>>(
   const listeners = new Set<() => void>();
 
   return {
-    get() {
+    get(this: void) {
       return query;
     },
 
-    set(patch: Partial<Q>) {
+    set(this: void, patch: Partial<Q>) {
       query = { ...query, ...patch };
       listeners.forEach((listener) => {
         listener();
