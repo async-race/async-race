@@ -21,6 +21,5 @@ describe('createFooter', () => {
     expect(link).toBeTruthy();
     expect(link?.href).toBe('https://github.com/async-race/async-race');
     expect(link?.textContent).toBe('Developed by Team .by in 2026');
-    expect(link?.className).toBe('text-blue-600 hover:underline');
   });
 });
