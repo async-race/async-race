@@ -13,7 +13,7 @@ export function createListStore<T extends { id: number }>() {
       return items.find((item) => item.id === id);
     },
 
-    set(newItems: T[], totalCount: number) {
+    set(this: void, newItems: T[], totalCount: number) {
       items = newItems;
       total = totalCount;
       listeners.forEach((listener) => {
