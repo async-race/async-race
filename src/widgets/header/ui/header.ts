@@ -3,7 +3,7 @@ import { BlockComponent, Button } from '@/shared';
 
 export function createHeader() {
   const header = BlockComponent({
-    tagName: 'div',
+    tagName: 'header',
     extraClasses: 'flex gap-4 pb-0',
   });
 

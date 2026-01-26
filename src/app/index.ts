@@ -8,7 +8,7 @@ import { createRouter, initRouter } from './router/router';
 export function startApp(rootElement: Element) {
   rootElement.classList.add('app-root');
   const main = BlockComponent({
-    tagName: 'div',
+    tagName: 'main',
     extraClasses: 'flex flex-1 justify-center',
   });
   const header = createHeader();
