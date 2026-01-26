@@ -6,12 +6,14 @@ export function Input({
   name,
   placeholder,
   extraClasses = '',
+  ariaLabel,
 }: {
   type?: string;
   id: string;
   name?: string;
   placeholder?: string;
   extraClasses?: string;
+  ariaLabel: string;
 }): HTMLInputElement {
   const base = baseClasses['input'];
   const input = document.createElement('input');
@@ -20,6 +22,7 @@ export function Input({
   if (name) input.name = name;
   if (placeholder) input.placeholder = placeholder;
   input.type = type;
+  input.setAttribute('aria-label', ariaLabel);
 
   return input;
 }
