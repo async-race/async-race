@@ -17,11 +17,11 @@ describe('createHeader', () => {
     const header = createHeader();
 
     expect(BlockComponent).toHaveBeenCalledWith({
-      tagName: 'div',
+      tagName: 'header',
       extraClasses: 'flex gap-4 pb-0',
     });
 
-    expect(header.tagName.toLowerCase()).toBe('div');
+    expect(header.tagName.toLowerCase()).toBe('header');
   });
 
   it('should create garage and winners buttons', () => {
